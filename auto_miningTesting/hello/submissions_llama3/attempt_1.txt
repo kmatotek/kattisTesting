@@ -1,0 +1,11 @@
+Here is a simple Python program to solve the problem. This program will print "Hello World!" on the standard output:
+
+```Python
+def main():
+    print("Hello World!")
+
+if __name__ == "__main__":
+    main()
+```
+
+You can run this program directly and it will produce the desired output.

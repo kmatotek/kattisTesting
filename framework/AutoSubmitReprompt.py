@@ -4,7 +4,7 @@ import subprocess
 import re
 
 # List of models to test
-models = ["qwen2.5-coder:1.5b"]
+models = ["llama3"]
 
 # Get the last non-empty line from text
 def get_last_non_empty_line(text):
@@ -32,7 +32,6 @@ def get_num_sample_test_cases(test_cases_content):
 
 # API call function using full conversation history
 def api_call_conversation(conversation, model):
-    print(conversation)
     response = ollama.chat(
         model=model,
         messages=conversation
@@ -67,7 +66,7 @@ for model in models:
             continue
 
         # Optional: Process only "1dfroggereasy" for testing
-        #if not folder_name == "1dfroggereasy": continue
+        if folder_name == "cinema" or folder_name == "99problems": continue
 
         problem_id = folder_name
 
