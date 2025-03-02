@@ -1,1 +1,22 @@
-You are out of submission tokens. Your next token will regenerate in 5 seconds.
+Submission received. Submission ID: 16796331.
+Submission URL: https://open.kattis.com/submissions/16796331
+https://open.kattis.com/submissions/16796331
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [x                                     ]  1 / 38
+[31mTime Limit Exceeded (> 1.00 s)[0m

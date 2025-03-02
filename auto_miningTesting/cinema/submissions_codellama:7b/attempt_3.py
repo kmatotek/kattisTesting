@@ -1,18 +1,12 @@
-import sys
+# Read input from standard input
+n = int(input())
+m = int(input())
+group_sizes = list(map(int, input().split()))
 
-def find_accepted_groups(seats, groups):
-    accepted_groups = []
-    for group in groups:
-        if seats >= group:
-            accepted_groups.append(group)
-            seats -= group
-        else:
-            break
-    return len(groups) - len(accepted_groups)
+# Calculate the number of groups that will not be accepted to the showing
+num_groups = 0
+for group_size in group_sizes:
+    if group_size > n:
+        num_groups += 1
 
-if __name__ == "__main__":
-    input = sys.stdin.read()
-    data = list(map(int, input.split()))
-    n_seats, n_groups = data[0], data[1]
-    groups = list(map(int, input.split()))[2:]
-    print(find_accepted_groups(n_seats, groups))
+print(num_groups)

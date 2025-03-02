@@ -1,39 +1,30 @@
-import sys
+#!/usr/bin/env python
 
-# Read input from standard input
 n, s, m = map(int, input().split())
 board = list(map(int, input().split()))
 
-# Initialize variables
-fate = None
-hops = 0
-
-# Loop until the fate is determined
-while fate == None:
-    # Check if the frog has reached the magic number
-    if board[s] == m:
-        fate = "magic"
+results = {}
+frog_index = s - 1
+hop_count = 0
+while True:
+    if board[frog_index] > 0:
+        hop_count += board[frog_index]
+        frog_index = (frog_index + hop_count) % n
+    elif board[frog_index] < 0:
+        hop_count += abs(board[frog_index])
+        frog_index = (frog_index - hop_count) % n
+    else:
         break
-    
-    # Check if the frog has fallen off the left end of the board
-    elif s == 1:
-        fate = "left"
-        break
-    
-    # Check if the frog has fallen off the right end of the board
-    elif s == n:
-        fate = "right"
-        break
-    
-    # Check if the frog is in a cycle
-    elif board[s] < 0 and (board[s] + board[s+1]) % m == 0:
-        fate = "cycle"
-        break
-    
-    # Make the next hop
-    hops += abs(board[s])
-    s += board[s]
-    
-# Output the result
-print(fate)
-print(hops)
+if board[frog_index] == m:
+    print("magic")
+    print(hop_count)
+else:
+    if frog_index == 0:
+        print("left")
+        print(hop_count)
+    elif frog_index == n - 1:
+        print("right")
+        print(hop_count)
+    else:
+        print("cycle")
+        print(hop_count)

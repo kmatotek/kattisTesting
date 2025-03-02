@@ -1,6 +1,6 @@
-Submission received. Submission ID: 16795466.
-Submission URL: https://open.kattis.com/submissions/16795466
-https://open.kattis.com/submissions/16795466
+Submission received. Submission ID: 16796338.
+Submission URL: https://open.kattis.com/submissions/16796338
+https://open.kattis.com/submissions/16796338
 
 
 New...
@@ -9,8 +9,12 @@ New...
 New...
 New...
 New...
-Compiling...
-Compiling...
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [?                                     ]  0 / 38
 Test cases: 
 Test cases: [x                                     ]  1 / 38
-[31mWrong Answer (0.04 s)[0m
+[31mTime Limit Exceeded (> 1.00 s)[0m

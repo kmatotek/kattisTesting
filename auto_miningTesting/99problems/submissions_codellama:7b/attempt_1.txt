@@ -1,19 +1,15 @@
+
 ```
-#input
-N=int(input())
-#define variables
-closest_number=None
-diff=float('inf')
-#create a list of numbers ending in 99
-numbers=[i for i in range(N,N+10000) if str(i)[-2:]=='99']
-#loop through the list and find the closest number to N that ends in 99
-for i in numbers:
-    #calculate the difference between N and the current number
-    curr_diff=abs(N-i)
-    #if the difference is smaller than the previous smallest difference, set it as the closest number
-    if curr_diff<diff:
-        closest_number=i
-        diff=curr_diff
-#print the closest number to N that ends in 99
-print(closest_number)
+n = int(input())
+if n % 10 == 5:
+    print(n)
+else:
+    if (n + 99) % 100 == 99:
+        print(n + 99)
+    else:
+        print(n + 99 - ((n + 99) % 100))
 ```
+This code uses input() to take a positive integer N as an input, then divides it by 10 to find the last digit of N. If N ends in 5, it prints N. Otherwise, it adds 99 to N and checks if the result ends in 99. If it does, it prints the result. If not, it subtracts the remainder of (N + 99) divided by 100 from (N + 99) to find the closest number that ends in 99.
+
+Input: An integer N representing the price of a product.
+Output: The closest positive integer to N that ends in 99, with ties resolved by printing the larger number.

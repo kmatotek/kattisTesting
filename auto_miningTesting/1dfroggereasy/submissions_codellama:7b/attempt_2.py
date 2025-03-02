@@ -1,3 +1,30 @@
-t seems like you have reached the limit on the number of submission tokens for this problem. The error message suggests that your token will regenerate in 18 seconds if you try to submit again too quickly. It's important to wait at least 24 hours between submissions when solving a problem, as the website checks for duplicate solutions and deducts points from those who submit multiple times within a short period of time.
+#!/usr/bin/env python
 
-In this case, I would suggest waiting for at least 24 hours before trying to submit your solution again. If you are unable to wait that long, then you can try reducing the number of test cases you run in your code or using a different programming language. However, it's important to note that the website checks for duplicate solutions and deducts points from those who submit multiple times within a short period of time
+n, s, m = map(int, input().split())
+board = list(map(int, input().split()))
+
+results = {}
+frog_index = s - 1
+hop_count = 0
+while True:
+    if board[frog_index] > 0:
+        hop_count += board[frog_index]
+        frog_index = (frog_index + hop_count) % n
+    elif board[frog_index] < 0:
+        hop_count += abs(board[frog_index])
+        frog_index = (frog_index - hop_count) % n
+    else:
+        break
+if board[frog_index] == m:
+    print("magic")
+    print(hop_count)
+else:
+    if frog_index == 0:
+        print("left")
+        print(hop_count)
+    elif frog_index == n - 1:
+        print("right")
+        print(hop_count)
+    else:
+        print("cycle")
+        print(hop_count)

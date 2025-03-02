@@ -1,7 +1,16 @@
 ```
 n = int(input())
-if n % 2 == 0:
-    print("Bob")
-else:
+alice_count, bob_count = 0, 0
+while n > 1:
+    if n % 2 == 0:
+        n -= 2
+        alice_count += 1
+    else:
+        n -= 2
+        bob_count += 1
+if alice_count > bob_count:
     print("Alice")
+else:
+    print("Bob")
 ```
+This program reads the input from standard input using the `input()` function and assigns it to the variable `n`. Then, it loops through all consecutive pairs of stones until there are no more consecutive pairs left. If the number of remaining stones is odd, Alice wins, otherwise Bob wins. The winner is printed on a separate line using the `print()` function.
