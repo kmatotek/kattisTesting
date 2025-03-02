@@ -4,8 +4,9 @@ import subprocess
 import re
 
 # List of models to test
-models = ["llama3"]
-
+models = ["tinyllama"]
+print("HI: ", os.getcwd())
+exit()
 # Get the last non-empty line from text
 def get_last_non_empty_line(text):
     clean_text = re.sub(r'\x1b\[[0-9;]*m', '', text)  # Remove ANSI escape codes
@@ -33,6 +34,7 @@ def get_num_sample_test_cases(test_cases_content):
 
 # API call function using full conversation history
 def api_call_conversation(conversation, model):
+    print(conversation)
     response = ollama.chat(
         model=model,
         messages=conversation
@@ -67,7 +69,7 @@ for model in models:
             continue
 
         # Optional: Process only "1dfroggereasy" for testing
-        if folder_name == "cinema" or folder_name == "99problems": continue
+        #if not folder_name == "hello": continue
 
         problem_id = folder_name
 
