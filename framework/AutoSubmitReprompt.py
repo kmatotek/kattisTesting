@@ -5,8 +5,7 @@ import re
 
 # List of models to test
 models = ["tinyllama"]
-print("HI: ", os.getcwd())
-exit()
+
 # Get the last non-empty line from text
 def get_last_non_empty_line(text):
     clean_text = re.sub(r'\x1b\[[0-9;]*m', '', text)  # Remove ANSI escape codes
