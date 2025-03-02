@@ -150,6 +150,7 @@ for model in models:
             )
 
             print(result.stdout)
+            print(result.stderr)
 
             # Save submission result
             result_file = f"attempt_{attempt}_result.txt"
