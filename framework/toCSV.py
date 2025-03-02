@@ -19,7 +19,8 @@ def get_test_cases_info(feedback):
         last_match = matches[-1]
         passed = int(last_match[0])
         total = int(last_match[1])
-        if passed == total: return passed, total
+        if passed == total:
+            return passed, total
         return passed - 1, total  # Adjust passed count if needed.
     return 0, 0
 
@@ -95,24 +96,19 @@ def process_problem_folder(folder_path, model, attempts=3):
     return attempt_data, passed_with_prompting, best_attempt
 
 def main():
-    parser = argparse.ArgumentParser(description="Analyze autoprompting submission results and output CSV data.")
-    parser.add_argument("--dir", default="./auto_miningTesting",
-                        help="Base directory containing problem folders")
-    parser.add_argument("--model", default="llama3",
-                        help="Model name used in directory naming (e.g., submissions_<model>)")
-    parser.add_argument("--attempts", type=int, default=3,
-                        help="Number of attempts per problem to process")
-    parser.add_argument("--output", default="results_summary.csv",
-                        help="CSV file to output the summary data")
-    args = parser.parse_args()
+    model = "qwen2.5-coder:7b"
+    base_dir = "./auto_miningTesting"
 
-    base_dir = args.dir
-    model = args.model
-    attempts = args.attempts
-    output_csv = args.output
-
-    # Define CSV columns. For each attempt, we now include one status column and columns for passed/total test cases.
-    header = ["problem"]
+    attempts = 3
+    
+    # Create the summaries directory relative to this script's location.
+   
+    
+    # Define the output CSV path in the summaries directory.
+    output_csv = os.path.join('./summaries', f"{model} results_data.csv")
+    
+    # Define CSV columns.
+    header = ["problem", "difficulty"]
     for attempt in range(1, attempts + 1):
         header += [
             f"attempt {attempt} status",
@@ -120,19 +116,33 @@ def main():
             f"attempt {attempt} total"
         ]
     header += ["passed w prompting", "best attempt"]
-
+    
     csv_rows = []
-
+    
     # Iterate over each problem folder in the base directory.
     for folder_name in os.listdir(base_dir):
         folder_path = os.path.join(base_dir, folder_name)
         if not os.path.isdir(folder_path):
             continue
-
+    
         print(f"Processing problem folder: {folder_name}")
+    
+        # Read the difficulty from metadata.
+        difficulty = ""
+        metadata_file = os.path.join(folder_path, "metadata")
+        if os.path.exists(metadata_file):
+            with open(metadata_file, "r", encoding="utf-8") as f:
+                lines = f.read().splitlines()
+                if len(lines) >= 2:
+                    difficulty = lines[-2].strip()  # Second-to-last line
+                else:
+                    print(f"Metadata file in {folder_path} does not have enough lines for difficulty.")
+        else:
+            print(f"Metadata file in {folder_path} does not exist.")
+    
         attempt_data, passed_with_prompting, best_attempt = process_problem_folder(folder_path, model, attempts)
-
-        row = {"problem": folder_name}
+    
+        row = {"problem": folder_name, "difficulty": difficulty}
         for attempt in range(1, attempts + 1):
             data = attempt_data.get(attempt, {})
             row[f"attempt {attempt} status"] = data.get("status") if data.get("status") is not None else ""
@@ -140,17 +150,18 @@ def main():
             row[f"attempt {attempt} total"] = data.get("total")
         row["passed w prompting"] = passed_with_prompting
         row["best attempt"] = best_attempt if best_attempt is not None else ""
-
+    
         csv_rows.append(row)
-
+    
     # Write rows to the CSV file.
     with open(output_csv, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
         writer.writeheader()
         for row in csv_rows:
             writer.writerow(row)
-
+    
     print(f"\nCSV summary written to {output_csv}")
+
 
 if __name__ == "__main__":
     main()
