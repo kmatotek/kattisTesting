@@ -1,0 +1,22 @@
+Submission received. Submission ID: 16795417.
+Submission URL: https://open.kattis.com/submissions/16795417
+https://open.kattis.com/submissions/16795417
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [?                                     ]  1 / 38
+Test cases: 
+Test cases: [....?                                 ]  5 / 38
+Test cases: 
+Test cases: [.......?                              ]  8 / 38
+Test cases: 
+Test cases: [............?                         ]  13 / 38
+Test cases: 
+Test cases: [.............x                        ]  14 / 38
+[31mRun Time Error (0.05 s)[0m

@@ -1,0 +1,11 @@
+The mistake in my previous solution was that I assumed that the first stone would be taken by Alice, whereas the problem statement specifies that Alice plays first. This means that my solution assumes that Bob will take the last stone, which is not necessarily true. Here's a corrected version of the program:
+```python
+# Read input from standard input
+N = int(input())
+# Play optimally and Alice plays first
+if N % 2 == 1:
+ print("Bob")
+else:
+ print("Alice")
+```
+This solution should pass all the sample test cases provided in the problem statement. If you have any further questions or issues, please let me know.

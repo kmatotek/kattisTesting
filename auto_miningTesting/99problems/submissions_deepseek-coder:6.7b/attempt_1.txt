@@ -1,0 +1,16 @@
+Sure, here is a Python program that solves the problem. The program uses simple arithmetic operations to find the nearest number ending with $99$.
+
+```python
+def closest_ending_in_99(n):
+    if n % 100 >= 50:
+        return (n // 100 + 1) * 100
+    else:
+        return n - n % 100
+
+# read the input number
+n = int(input())
+print(closest_ending_in_99(n))
+```
+This program first defines a function `closest_ending_in_99` that calculates the closest number to `n` ending with $99$. It uses integer division (//) and modulus (%) operations to find the quotient and remainder of `n` divided by $100$, respectively. If the remainder is greater than or equal to 50, it means that we should round up because the next multiple of $100$ would have a larger remainder when divided by $100$ (which makes it closer). Otherwise, if the remainder is less than 50, it means we should round down because the current number itself would have a smaller remainder when divided by $100$ (which makes it closer). The function then returns this calculated number.
+
+The main part of the program reads an integer from standard input using `input()` and prints the result of calling `closest_ending_in_99(n)` on that number.

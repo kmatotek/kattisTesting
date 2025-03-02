@@ -1,0 +1,6 @@
+I apologize for any confusion. You're right; printing "Hello World" is not an input-dependent problem. As such, it doesn't require `input()` function or user interaction in general. The given solution with your error statement should indeed work as expected (printing 'Hello World'). 
+
+```python
+print("Hello World")
+```
+This Python code snippet will output "Hello World" when run. It uses the built-in `print()` function of Python to display text in the console, without requiring any user input or external libraries.

@@ -1,0 +1,21 @@
+I'm sorry for any confusion earlier. Let's revise our Python program based on the updated problem description:
+
+```python
+# Read N and M
+values = list(map(int, input().split()))
+N, M = values[0], values[1]
+
+# Read group sizes
+group_sizes = list(map(int, input().split()))
+
+rejections = 0
+total_visitors = 0
+for size in group_sizes:
+    if total_visitors + size > N:  # Check if adding current group will exceed the theater capacity
+        rejections += 1
+    else:
+        total_visitors += size  # If not, add its size to the running total of visitors
+
+print(rejections)
+```
+In this program, we first read `N` and `M` from input. Then, we read the group sizes from standard input. For each group size in order they signed up, if adding that group's size to `total_visitors` exceeds `N` (the theater capacity), we increment `rejections`; otherwise, we add the group size to `total_visitors`. Finally, we print out the number of rejections.

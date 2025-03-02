@@ -1,0 +1,11 @@
+Here's the Python program for the problem:
+```python
+# Read input from standard input
+N = int(input())
+# Play optimally and Alice plays first
+if N % 2 == 1:
+ print("Alice")
+else:
+ print("Bob")
+```
+To run this program, save it to a file with a .py extension (e.g., stones.py) and execute it using the command `python stones.py`. Make sure you have Python installed on your system before running the program.

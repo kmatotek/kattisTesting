@@ -1,0 +1,21 @@
+Here is a Python solution for the problem. The code reads input from standard input using `input()`, writes output using `print()` and uses only internal Python libraries (no external ones):
+
+```python
+# Read N and M
+values = list(map(int, input().split()))
+N, M = values[0], values[1]
+
+# Read group sizes
+group_sizes = list(map(int, input().split()))
+
+total_visitors = 0
+rejections = 0
+for size in group_sizes:
+    total_visitors += size
+    if total_visitors > N:
+        rejections += 1
+
+print(rejections)
+```
+
+This program works by reading the number of seats (`N`) and groups signed up for the showing (`M`). It then reads the sizes of each group that signed up. For each group, it adds its size to a running total of visitors. If this total exceeds `N`, the group is rejected, and the program increments a rejections count. Finally, it prints out the number of groups that were not accepted.

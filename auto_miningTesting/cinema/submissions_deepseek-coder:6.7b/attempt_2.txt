@@ -1,0 +1,21 @@
+I apologize for the confusion. I misunderstood the problem initially. Let's revise the Python program based on the updated problem description:
+
+```python
+# Read N and M
+values = list(map(int, input().split()))
+N, M = values[0], values[1]
+
+# Read group sizes
+group_sizes = list(map(int, input().split()))
+
+rejections = 0
+total_visitors = 0
+for size in group_sizes:
+    if total_visitors + size > N:
+        rejections += 1
+    else:
+        total_visitors += size
+
+print(rejections)
+```
+In this program, we first read the input for `N` and `M`. Then, we read the group sizes from standard input. For each group size in the order they were signed up, if adding that group's size to `total_visitors` exceeds `N`, we increment `rejections`; otherwise, we add the group size to `total_visitors`. Finally, we print out the number of rejections.

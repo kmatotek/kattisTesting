@@ -1,0 +1,2 @@
+
+Your previous submit was for this problem: '1dfroggereasy' . The error type was: You are out of submission tokens. Your next token will regenerate in 47 seconds.. No test cases were run due to an error.  Additionally, your solution failed at least one of the sample test cases. Please review your code, identify the mistake, and provide a corrected version.

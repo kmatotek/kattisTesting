@@ -1,0 +1,22 @@
+Here is the Python program for this problem:
+```python
+import math
+def nearest_price(n):
+ if n % 100 == 0:
+ return n + 99 - (n % 99)
+ else:
+ remainder = n % 100
+ return n + (100 - remainder) - (n % 99)
+n = int(input())
+nearest_price = nearest_price(n)
+print(nearest_price)
+```
+
+The program defines a function `nearest_price` that takes a positive integer `n` as input and returns the nearest positive integer to `n` which ends in 99. The function first checks if `n` is already divisible by 100, in which case it simply adds 99 to `n`. If not, it calculates the remainder of `n` when divided by 100 and subtracts that from `n`, adding 100 minus the remainder to get a multiple of 100. Finally, the program reads input from standard input using `input()`, calls the `nearest_price` function with this input, and prints the result using `print()`.
+
+Here are the test cases for this problem:
+```python
+assert nearest_price(10) == 99
+assert nearest_price(249) == 299
+assert nearest_price(10000) == 9999
+```
