@@ -67,7 +67,7 @@ for model in models:
             continue
 
         # Optional: Process only "1dfroggereasy" for testing
-        if not folder_name == "hello": continue
+        #if not folder_name == "hello": continue
 
         problem_id = folder_name
 
