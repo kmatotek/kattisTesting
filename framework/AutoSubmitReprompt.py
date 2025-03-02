@@ -4,7 +4,7 @@ import subprocess
 import re
 
 # List of models to test
-models = ["codellama:7b"]
+models = ["llama3"]
 
 # Get the last non-empty line from text
 def get_last_non_empty_line(text):
@@ -22,7 +22,8 @@ def get_test_cases_info(feedback):
         last_match = matches[-1]
         passed = int(last_match[0])
         total = int(last_match[1])
-        if passed == total: return passed, total
+        if passed == total: 
+            return passed, total
         return passed - 1, total  # Adjust passed count if needed
     return 0, 0
 
@@ -66,15 +67,21 @@ for model in models:
         if not os.path.isdir(folder_path):
             continue
 
-        # Optional: Process only "1dfroggereasy" for testing
-        #if not folder_name == "hello": continue
+        # Optional: Process only a specific problem folder for testing
+        #if not folder_name == "cinema": continue
 
         problem_id = folder_name
 
-        # Create folders for submissions and results
-        submissions_folder = os.path.join(folder_path, f"submissions_{model}")
+        # Create the base submissions and results directories in the problem folder.
+        submissions_base = os.path.join(folder_path, "submissions")
+        os.makedirs(submissions_base, exist_ok=True)
+        results_base = os.path.join(folder_path, "results")
+        os.makedirs(results_base, exist_ok=True)
+        
+        # Create a model-specific directory inside each.
+        submissions_folder = os.path.join(submissions_base, model)
         os.makedirs(submissions_folder, exist_ok=True)
-        results_folder = os.path.join(folder_path, f"results_{model}")
+        results_folder = os.path.join(results_base, model)
         os.makedirs(results_folder, exist_ok=True)
 
         # Read problem description
