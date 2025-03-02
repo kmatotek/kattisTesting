@@ -22,6 +22,7 @@ def get_test_cases_info(feedback):
         last_match = matches[-1]
         passed = int(last_match[0])
         total = int(last_match[1])
+        if passed == total: return passed, total
         return passed - 1, total  # Adjust passed count if needed
     return 0, 0
 

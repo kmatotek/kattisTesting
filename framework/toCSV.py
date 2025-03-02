@@ -19,7 +19,8 @@ def get_test_cases_info(feedback):
         last_match = matches[-1]
         passed = int(last_match[0])
         total = int(last_match[1])
-        return passed, total  # Adjust passed count if needed.
+        if passed == total: return passed, total
+        return passed - 1, total  # Adjust passed count if needed.
     return 0, 0
 
 # Extract Python code from a message (if needed).
@@ -49,16 +50,16 @@ def process_problem_folder(folder_path, model, attempts=3):
         if not os.path.exists(result_file) and not os.path.exists(submission_file):
             break
         
-        data = {"status": None, "passed": 0, "total": 0, "code": "", "error_message": ""}
+        data = {"status": None, "passed": 0, "total": 0, "code": ""}
         
         if os.path.exists(result_file):
             with open(result_file, "r", encoding="utf-8") as f:
                 result_content = f.read()
+            # Both status and error message are the same; we keep one column.
             data["status"] = get_last_non_empty_line(result_content)
             passed, total = get_test_cases_info(result_content)
             data["passed"] = passed
             data["total"] = total
-            data["error_message"] = get_last_non_empty_line(result_content)
         else:
             print(f"Result file for attempt {attempt} in {folder_path} does not exist.")
         
@@ -110,19 +111,16 @@ def main():
     attempts = args.attempts
     output_csv = args.output
 
-    # Define CSV columns. We create columns for each attempt (status, passed, total, error message),
-    # then add columns for passed_with_prompting and best_attempt.
+    # Define CSV columns. For each attempt, we now include one status column and columns for passed/total test cases.
     header = ["problem"]
     for attempt in range(1, attempts + 1):
         header += [
-            f"attempt_{attempt}_status",
-            f"attempt_{attempt}_passed",
-            f"attempt_{attempt}_total",
-            f"attempt_{attempt}_error"
+            f"attempt {attempt} status",
+            f"attempt {attempt} passed",
+            f"attempt {attempt} total"
         ]
-    header += ["passed_with_prompting", "best_attempt"]
+    header += ["passed w prompting", "best attempt"]
 
-    # List to hold row dictionaries.
     csv_rows = []
 
     # Iterate over each problem folder in the base directory.
@@ -134,20 +132,18 @@ def main():
         print(f"Processing problem folder: {folder_name}")
         attempt_data, passed_with_prompting, best_attempt = process_problem_folder(folder_path, model, attempts)
 
-        # Build row data for each problem folder.
         row = {"problem": folder_name}
         for attempt in range(1, attempts + 1):
             data = attempt_data.get(attempt, {})
-            row[f"attempt_{attempt}_status"] = data.get("status") if data.get("status") is not None else ""
-            row[f"attempt_{attempt}_passed"] = data.get("passed")
-            row[f"attempt_{attempt}_total"] = data.get("total")
-            row[f"attempt_{attempt}_error"] = data.get("error_message")
-        row["passed_with_prompting"] = passed_with_prompting
-        row["best_attempt"] = best_attempt if best_attempt is not None else ""
+            row[f"attempt {attempt} status"] = data.get("status") if data.get("status") is not None else ""
+            row[f"attempt {attempt} passed"] = data.get("passed")
+            row[f"attempt {attempt} total"] = data.get("total")
+        row["passed w prompting"] = passed_with_prompting
+        row["best attempt"] = best_attempt if best_attempt is not None else ""
 
         csv_rows.append(row)
 
-    # Write the rows to the CSV file.
+    # Write rows to the CSV file.
     with open(output_csv, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
         writer.writeheader()
