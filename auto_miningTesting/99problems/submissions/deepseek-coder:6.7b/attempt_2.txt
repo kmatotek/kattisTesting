@@ -1,0 +1,17 @@
+I apologize for misunderstanding the problem. The correct Python program should look like this:
+
+```python
+def nearest_ending_in_99(n):
+    # If n ends in 1-50 or 99-100, subtract the last two digits from 100 and add them to n.
+    if int(str(n)[-2:]) <= 50 or int(str(n)[-2:]) >= 99:
+        return n - int(str(n)[-2:]) + 100
+    
+    else:  
+        # If n ends in 51-98, subtract the last digit and add 100.
+        return n - int(str(n)[-1]) + 100
+
+# Read input from standard input using input() function.
+N = int(input())
+print(nearest_ending_in_99(N))
+```
+This program works by checking if the last two digits of N end in a number that is between 1 and 50 (not inclusive) or between 99 and 100 (inclusive). If they do, it subtracts these from n and adds 100 to get a number ending in 99 which can be added to n without changing its value. If not, it calculates the difference between 100 and the last digit of n and then adds this to n.

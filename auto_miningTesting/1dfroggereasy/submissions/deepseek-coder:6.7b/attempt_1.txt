@@ -1,0 +1,29 @@
+```python
+def frogger(n, s, m, board):
+    visited = [False] * (n + 1)
+    position = s
+    hops = 0
+    
+    while True:
+        if not 1 <= position <= n or visited[position]:
+            return 'cycle', hops
+        
+        visited[position] = True
+        hop_length = board[position - 1]
+        position += hop_length
+        hops += 1
+        
+        if hop_length == m:
+            return 'magic', hops
+        elif position < 1:
+            return 'left', hops
+        elif position > n:
+            return 'right', hops
+
+n, s, m = map(int, input().split())
+board = list(map(int, input().split()))
+state, hops = frogger(n, s, m, board)
+print(state)
+print(hops)
+```
+This program works by simulating the Frogger game. It keeps track of visited positions and uses a while loop to simulate the game until it ends. If the frog falls off the left or right end of the board, it returns 'left' or 'right', respectively. If the frog lands on the magic number, it returns 'magic'. If the frog gets stuck in a cycle (i.e., visits a position that has already been visited), it returns 'cycle'.

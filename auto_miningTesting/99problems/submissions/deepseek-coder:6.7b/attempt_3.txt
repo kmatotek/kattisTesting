@@ -1,0 +1,14 @@
+I apologize for misunderstanding the problem. The correct Python program should look like this:
+
+```python
+def nearest_ending_in_99(n):
+    if n % 100 >= 50:   # If last two digits are between 50-99 inclusive, round it up to next multiple of 100.
+        return (n + 99) - (n % 100)
+    else:                 # Else round down to the nearest multiple of 100.
+        return n - (n % 100)
+
+# Read input from standard input using input() function.
+N = int(input())
+print(nearest_ending_in_99(N))
+```
+This program works by checking if the last two digits of N are between 50 and 99 (inclusive). If they are, it rounds up to the next multiple of 100. Else, it rounds down to the nearest multiple of 100. It then subtracts the original last two digits from this rounded number to get a number ending in 99 which can be added to N without changing its value.

@@ -1,0 +1,16 @@
+The problem is about nim game and nimbers. In the context of this game, a position with an even number of stones (n) has Bob as the winner because there are no winning moves for Alice: she can only remove one stone to leave either 0 or an odd number of stones that will be won by Bob. A position with an odd number of stones has Alice as the winner.
+
+Here is a Python program based on this understanding:
+
+```python
+def game_winner(n):
+    if n % 2 == 0:
+        return "Bob"
+    else:
+        return "Alice"
+
+# read input from standard input
+n = int(input().strip())
+print(game_winner(n))
+```
+This program reads an integer `n` from the standard input, and then prints either "Alice" or "Bob" based on whether `n` is even or odd. The function `game_winner()` takes an argument `n` (the number of stones) and returns a string indicating who the winner is based on the rules of the game.

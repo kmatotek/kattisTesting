@@ -1,0 +1,16 @@
+Here is a Python program to solve this problem:
+
+```python
+def nearest_ending_in_99(n):
+    # If n ends in 50-99, add 49 to n and return the result.
+    if (100 - int(str(n)[-2:])) <= 49:
+        return n + 49
+    
+    else:  
+        return n + (100 - 1 - int(str(n)[-2:])) # Else, add the difference to n and return the result.
+
+# Read input from standard input using input() function.
+N = int(input())
+print(nearest_ending_in_99(N))
+```
+This program works by checking if the last two digits of N end in a number that is between 50 and 99 (inclusive). If they do, it adds 49 to this number. If not, it calculates the difference between 100 and the last digit and then subtracts this from 100 to get a number ending in 99 which can be added to N without changing its value.
