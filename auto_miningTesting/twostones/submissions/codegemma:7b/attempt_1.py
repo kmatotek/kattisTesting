@@ -1,0 +1,9 @@
+def stone_game(n):
+    if n % 2 == 1:
+        return "Alice"
+    else:
+        return "Bob"
+
+n = int(input())
+winner = stone_game(n)
+print(winner)
