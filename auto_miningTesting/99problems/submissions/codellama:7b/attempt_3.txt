@@ -1,0 +1,15 @@
+
+The issue with the previous solution is that it fails to handle the case where `N` is a multiple of 100. In this case, the expression `ceil(N / 100) * 100 - 99` will give the same result as `floor(N / 100 + 1) * 100 - 99`, which is not what we want.
+
+Here's a corrected version of the code:
+```python
+from math import ceil, floor
+
+N = int(input())
+
+# find the nearest number to N that is divisible by 100 and ends in 99
+closest_number = (ceil(N / 100) * 100 - 99) if (ceil(N / 100) * 100 - 99) % 10 == 0 else (floor(N / 100 + 1) * 100 - 99)
+
+print(closest_number)
+```
+This code uses the ternary operator `?` to check if the result of `ceil(N / 100) * 100 - 99` is a multiple of 10, and if so, returns that value. Otherwise, it returns the result of `floor(N / 100 + 1) * 100 - 99`.
