@@ -1,6 +1,0 @@
-I apologize for the confusion. It seems there's been a misunderstanding. The problem statement is "Hello World" not any other string. So, I believe my previous solution is correct as per the requirement of printing "Hello World". 
-
-```python
-print("Hello World")
-```
-The output will be: `Hello World` on execution. As it's a basic task to print a string, there are no hardcoded test cases or inputs involved. The statement uses Python's built-in function `print()` for output and does not require any input hence the usage of `input()` is incorrect.

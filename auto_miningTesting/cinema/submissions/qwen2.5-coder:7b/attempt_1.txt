@@ -1,0 +1,41 @@
+Here's a Python program that reads input from standard input, processes the data according to the problem description, and writes output using `print()`:
+
+```python
+# Read input values
+N, M = map(int, input().split())
+groups = list(map(int, input().split()))
+
+# Initialize variables
+seats_available = N
+groups_not_accepted = 0
+
+# Process each group in order
+for group_size in groups:
+    if group_size <= seats_available:
+        seats_available -= group_size
+    else:
+        groups_not_accepted += 1
+
+# Output the number of groups not accepted
+print(groups_not_accepted)
+```
+
+### Explanation:
+
+1. **Reading Input:**
+   - The first line is split into two integers \( N \) and \( M \) which represent the number of seats in the theater and the number of visiting groups, respectively.
+   - The second line is split into a list of integers representing the sizes of each group.
+
+2. **Initialization:**
+   - `seats_available` is initialized to \( N \), the total number of seats available.
+   - `groups_not_accepted` is initialized to 0 to count how many groups will not be accepted.
+
+3. **Processing Each Group:**
+   - For each group size in the list, check if there are enough seats available:
+     - If the group size is less than or equal to the number of seats available, subtract the group size from `seats_available`.
+     - If not, increment the count of `groups_not_accepted`.
+
+4. **Output:**
+   - Finally, print the number of groups that will not be accepted.
+
+This program reads input directly from standard input using `input()` and writes output to the console using `print()`. It adheres to the constraints and requirements specified in the problem statement.

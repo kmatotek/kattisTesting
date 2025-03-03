@@ -1,0 +1,22 @@
+Here is a Python program that solves the problem:
+
+```Python
+def count_groups_not_accepted():
+    N, M = map(int, input().split())
+    group_sizes = list(map(int, input().split()))
+    
+    groups_not_accepted = 0
+    current_seats_available = N
+    
+    for group_size in group_sizes:
+        if group_size > current_seats_available:
+            groups_not_accepted += 1
+        else:
+            current_seats_available -= group_size
+            
+    print(groups_not_accepted)
+
+count_groups_not_accepted()
+```
+
+This program first reads the number of seats `N` and the number of visiting groups `M`. Then it reads the sizes of all the visiting groups. It then iterates over the group sizes, keeping track of the current number of seats available. If a group size is greater than the current number of seats available, the group will not be accepted, so it increments the count of groups not accepted. If a group can fit in the theater, it updates the current number of seats available by subtracting the group size. Finally, it prints the total count of groups that will not be accepted.

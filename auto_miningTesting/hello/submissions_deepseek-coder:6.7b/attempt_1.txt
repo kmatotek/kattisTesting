@@ -1,7 +1,0 @@
-Sure, here is a simple Python program that meets your requirements:
-
-```python
-print("Hello World")
-```
-
-This program will print "Hello World" when it runs. As there's no input required for this problem, we don't use the `input()` function. The output is achieved using the `print()` function. All variables and functions names are unique, as per Python naming conventions and only internal Python libraries were used.

@@ -1,7 +1,7 @@
 import os
 import re
 import csv
-import argparse
+
 
 # Remove ANSI escape codes and get the last non-empty line.
 def get_last_non_empty_line(text):
@@ -24,23 +24,10 @@ def get_test_cases_info(feedback):
         return passed - 1, total  # Adjust passed count if needed.
     return 0, 0
 
-# Extract Python code from a message (if needed).
-def get_python(message):
-    start_code_block = message.find("```Python")
-    if start_code_block == -1:
-        start_code_block = message.find("```python")
-    if start_code_block == -1:
-        start_code_block = message.find("```")
-        cut_string = message[start_code_block + 3:]
-    else:
-        cut_string = message[start_code_block + 10:]
-    end_code_block = cut_string.find("```")
-    return cut_string[:end_code_block].strip()
-
 # Process a single problem folder for a given model.
 def process_problem_folder(folder_path, model, attempts=3):
-    submissions_folder = os.path.join(folder_path, f"submissions_{model}")
-    results_folder = os.path.join(folder_path, f"results_{model}")
+    submissions_folder = os.path.join(folder_path, "submissions", model)
+    results_folder = os.path.join(folder_path, "results", model)
     
     attempt_data = {}
     for attempt in range(1, attempts + 1):
@@ -56,7 +43,6 @@ def process_problem_folder(folder_path, model, attempts=3):
         if os.path.exists(result_file):
             with open(result_file, "r", encoding="utf-8") as f:
                 result_content = f.read()
-            # Both status and error message are the same; we keep one column.
             data["status"] = get_last_non_empty_line(result_content)
             passed, total = get_test_cases_info(result_content)
             data["passed"] = passed
@@ -98,16 +84,10 @@ def process_problem_folder(folder_path, model, attempts=3):
 def main():
     model = "qwen2.5-coder:7b"
     base_dir = "./auto_miningTesting"
-
     attempts = 3
     
-    # Create the summaries directory relative to this script's location.
-   
-    
-    # Define the output CSV path in the summaries directory.
     output_csv = os.path.join('./summaries', f"{model} results_data.csv")
     
-    # Define CSV columns.
     header = ["problem", "difficulty"]
     for attempt in range(1, attempts + 1):
         header += [
@@ -119,7 +99,6 @@ def main():
     
     csv_rows = []
     
-    # Iterate over each problem folder in the base directory.
     for folder_name in os.listdir(base_dir):
         folder_path = os.path.join(base_dir, folder_name)
         if not os.path.isdir(folder_path):
@@ -127,14 +106,13 @@ def main():
     
         print(f"Processing problem folder: {folder_name}")
     
-        # Read the difficulty from metadata.
         difficulty = ""
         metadata_file = os.path.join(folder_path, "metadata")
         if os.path.exists(metadata_file):
             with open(metadata_file, "r", encoding="utf-8") as f:
                 lines = f.read().splitlines()
                 if len(lines) >= 2:
-                    difficulty = lines[-2].strip()  # Second-to-last line
+                    difficulty = lines[-2].strip()
                 else:
                     print(f"Metadata file in {folder_path} does not have enough lines for difficulty.")
         else:
@@ -153,7 +131,6 @@ def main():
     
         csv_rows.append(row)
     
-    # Write rows to the CSV file.
     with open(output_csv, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
         writer.writeheader()
@@ -161,7 +138,6 @@ def main():
             writer.writerow(row)
     
     print(f"\nCSV summary written to {output_csv}")
-
 
 if __name__ == "__main__":
     main()
