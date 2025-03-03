@@ -15,10 +15,7 @@ from lxml.html import fragment_fromstring
 if sys.version_info[0] >= 3:
     import configparser
 else:
-    # Python 2, import modules with Python 3 names
     import ConfigParser as configparser
-
-# End Python 2/3 compatibility
 
 _DEFAULT_CONFIG = '/usr/local/etc/kattisrc'
 _LANGUAGE_GUESS = {
@@ -64,9 +61,10 @@ _LANGUAGE_GUESS = {
     '.swift': 'Swift',
     '.nim': 'Nim',
 }
-
 _GUESS_MAINCLASS = {'Java', 'Kotlin', 'Scala'}
-_GUESS_MAINFILE = {'APL', 'Bash', 'Dart', 'Gerbil', 'JavaScript (Node.js)', 'Julia', 'Common Lisp', 'Pascal', 'PHP', 'Python 2', 'Python 3', 'Ruby', 'Rust', 'TypeScript', 'Zig'}
+_GUESS_MAINFILE = {'APL', 'Bash', 'Dart', 'Gerbil', 'JavaScript (Node.js)', 'Julia',
+                   'Common Lisp', 'Pascal', 'PHP', 'Python 2', 'Python 3', 'Ruby',
+                   'Rust', 'TypeScript', 'Zig'}
 
 _HEADERS = {'User-Agent': 'kattis-cli-submit'}
 
@@ -74,7 +72,7 @@ _RUNNING_STATUS = 5
 _COMPILE_ERROR_STATUS = 8
 _ACCEPTED_STATUS = 16
 _STATUS_MAP = {
-    0: 'New', # <invalid value>
+    0: 'New',
     1: 'New',
     2: 'Waiting for compile',
     3: 'Compiling',
@@ -89,7 +87,6 @@ _STATUS_MAP = {
     12: 'Time Limit Exceeded',
     13: 'Illegal Function',
     14: 'Wrong Answer',
-    # 15: '<invalid value>',
     _ACCEPTED_STATUS: 'Accepted',
 }
 
@@ -106,8 +103,6 @@ def get_url(cfg, option, default):
 
 
 def get_config():
-    """Returns a ConfigParser object for the .kattisrc file(s)
-    """
     cfg = configparser.ConfigParser()
     if os.path.exists(_DEFAULT_CONFIG):
         cfg.read(_DEFAULT_CONFIG)
@@ -196,27 +191,17 @@ def guess_mainclass(language, files):
     return None
 
 
-def login(login_url, username, password=None, token=None):
-    """Log in to Kattis.
-
-    At least one of password or token needs to be provided.
-
-    Returns a requests.Response with cookies needed to be able to submit
-    """
+# Use a session for persistent connection/cookies.
+def login(session, login_url, username, password=None, token=None):
     login_args = {'user': username, 'script': 'true'}
     if password:
         login_args['password'] = password
     if token:
         login_args['token'] = token
+    return session.post(login_url, data=login_args)
 
-    return requests.post(login_url, data=login_args, headers=_HEADERS)
 
-
-def login_from_config(cfg):
-    """Log in to Kattis using the access information in a kattisrc file
-
-    Returns a requests.Response with cookies needed to be able to submit
-    """
+def login_from_config(session, cfg):
     username = cfg.get('user', 'username')
     password = token = None
     try:
@@ -233,20 +218,11 @@ Your .kattisrc file appears corrupted. It must provide a token (or a
 KATTIS password).
 
 Please download a new .kattisrc file''')
-
     loginurl = get_url(cfg, 'loginurl', 'login')
-    return login(loginurl, username, password, token)
+    return login(session, loginurl, username, password, token)
 
 
-def submit(submit_url, cookies, problem, language, files, mainclass='', tag='', assignment=None, contest=None):
-    """Make a submission.
-
-    The url_opener argument is an OpenerDirector object to use (as
-    returned by the login() function)
-
-    Returns the requests.Result from the submission
-    """
-
+def submit(session, submit_url, problem, language, files, mainclass='', tag='', assignment=None, contest=None):
     data = {'submit': 'true',
             'submit_ctr': 2,
             'language': language,
@@ -266,8 +242,76 @@ def submit(submit_url, cookies, problem, language, files, mainclass='', tag='', 
                               (os.path.basename(f),
                                sub_file.read(),
                                'application/octet-stream')))
+    return session.post(submit_url, data=data, files=sub_files)
 
-    return requests.post(submit_url, data=data, files=sub_files, cookies=cookies, headers=_HEADERS)
+
+def get_submission_status(session, submission_url):
+    reply = session.get(submission_url + '?json')
+    return reply.json()
+
+
+_RED_COLOR = 31
+_GREEN_COLOR = 32
+def color(s, c):
+    return '\x1b[%sm%s\x1b[0m' % (c, s)
+
+
+def show_judgement(session, submission_url, cfg):
+    print()
+    while True:
+        status = get_submission_status(session, submission_url)
+        status_id = status['status_id']
+        testcases_done = status['testcase_index']
+        testcases_total = status['row_html'].count('<i') - 1
+
+        status_text = _STATUS_MAP.get(status_id, 'Unknown status %s' % status_id)
+
+        if status_id < _RUNNING_STATUS:
+            print('\r%s...' % (status_text), end='')
+        else:
+            print('\rTest cases: ', end='')
+
+        if status_id == _COMPILE_ERROR_STATUS:
+            print('\r%s' % color(status_text, _RED_COLOR), end='')
+            try:
+                root = fragment_fromstring(status['feedback_html'], create_parent=True)
+                error = root.find('.//pre').text
+                print(color(':', _RED_COLOR))
+                print(error, end='')
+            except:
+                pass
+        elif status_id < _RUNNING_STATUS:
+            print('\r%s...' % (status_text), end='')
+        else:
+            print('\rTest cases: ', end='')
+            if testcases_total == 0:
+                print('???', end='')
+            else:
+                s = '.' * (testcases_done - 1)
+                if status_id == _RUNNING_STATUS:
+                    s += '?'
+                elif status_id == _ACCEPTED_STATUS:
+                    s += '.'
+                else:
+                    s += 'x'
+                print('[%-*s]  %d / %d' % (testcases_total, s, testcases_done, testcases_total), end='')
+
+        sys.stdout.flush()
+
+        if status_id > _RUNNING_STATUS:
+            print()
+            success = status_id == _ACCEPTED_STATUS
+            try:
+                root = fragment_fromstring(status['row_html'], create_parent=True)
+                cpu_time = root.find('.//*[@data-type="cpu"]').text
+                status_text += " (" + cpu_time + ")"
+            except:
+                pass
+            if status_id != _COMPILE_ERROR_STATUS:
+                print(color(status_text, _GREEN_COLOR if success else _RED_COLOR))
+            return success
+
+        time.sleep(0.25)
 
 
 def confirm_or_die(problem, language, files, mainclass, tag):
@@ -295,98 +339,19 @@ def get_submission_url(submit_response, cfg):
         return '%s/%s' % (submissions_url, submission_id)
 
 
-def get_submission_status(submission_url, cookies):
-    reply = requests.get(submission_url + '?json', cookies=cookies, headers=_HEADERS)
-    return reply.json()
-
-
-_RED_COLOR = 31
-_GREEN_COLOR = 32
-def color(s, c):
-    return '\x1b[%sm%s\x1b[0m' % (c, s)
-
-
-def show_judgement(submission_url, cfg):
-    print()
-    login_reply = login_from_config(cfg)
-    while True:
-        status = get_submission_status(submission_url, login_reply.cookies)
-        status_id = status['status_id']
-        testcases_done = status['testcase_index']
-        testcases_total = status['row_html'].count('<i') - 1
-
-        status_text = _STATUS_MAP.get(status_id, 'Unknown status %s' % status_id)
-
-
-        if status_id < _RUNNING_STATUS:
-            print('\r%s...' % (status_text), end='')
-        else:
-            print('\rTest cases: ', end='')
-
-        if status_id == _COMPILE_ERROR_STATUS:
-            print('\r%s' % color(status_text, _RED_COLOR), end='')
-            try:
-                root = fragment_fromstring(status['feedback_html'], create_parent=True)
-                error = root.find('.//pre').text
-                print(color(':', _RED_COLOR))
-                print(error, end='')
-            except:
-                pass
-        elif status_id < _RUNNING_STATUS:
-            print('\r%s...' % (status_text), end='')
-        else:
-            print('\rTest cases: ', end='')
-
-            if testcases_total == 0:
-                print('???', end='')
-            else:
-                s = '.' * (testcases_done - 1)
-                if status_id == _RUNNING_STATUS:
-                    s += '?'
-                elif status_id == _ACCEPTED_STATUS:
-                    s += '.'
-                else:
-                    s += 'x'
-
-                print('[%-*s]  %d / %d' % (testcases_total, s, testcases_done, testcases_total), end='')
-
-        sys.stdout.flush()
-
-        if status_id > _RUNNING_STATUS:
-            # Done
-            print()
-            success = status_id == _ACCEPTED_STATUS
-            try:
-                root = fragment_fromstring(status['row_html'], create_parent=True)
-                cpu_time = root.find('.//*[@data-type="cpu"]').text
-                status_text += " (" + cpu_time + ")"
-            except:
-                pass
-            if status_id != _COMPILE_ERROR_STATUS:
-                print(color(status_text, _GREEN_COLOR if success else _RED_COLOR))
-            return success
-
-        time.sleep(0.25)
-
-
 def main():
     parser = argparse.ArgumentParser(prog='kattis', description='Submit a solution to Kattis')
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-a', '--assignment',
-                        help='''Short name of assignment you want to submit to
-Overrides default guess (server guesses based on assignments you are in)''')
+                        help='Short name of assignment you want to submit to\nOverrides default guess (server guesses based on assignments you are in)')
     group.add_argument('-c', '--contest',
-                        help='''Short name of contest you want to submit to
-Overrides default guess (server guesses based on contests you are in)''')
+                        help='Short name of contest you want to submit to\nOverrides default guess (server guesses based on contests you are in)')
     parser.add_argument('-p', '--problem',
-                        help=''''Which problem to submit to.
-Overrides default guess (first part of first filename)''')
+                        help='Which problem to submit to.\nOverrides default guess (first part of first filename)')
     parser.add_argument('-m', '--mainclass',
-                        help='''Sets mainclass.
-Overrides default guess (first part of first filename)''')
+                        help='Sets mainclass.\nOverrides default guess (first part of first filename)')
     parser.add_argument('-l', '--language',
-                        help='''Sets language.
-Overrides default guess (based on suffix of first filename)''')
+                        help='Sets language.\nOverrides default guess (based on suffix of first filename)')
     parser.add_argument('-t', '--tag',
                         help=argparse.SUPPRESS)
     parser.add_argument('-f', '--force',
@@ -420,15 +385,17 @@ Overrides default guess (based on suffix of first filename)''')
         language = args.language
 
     if language is None:
-        print('''\
-No language specified, and I failed to guess language from filename
-extension "%s"''' % (ext,))
+        print('No language specified, and I failed to guess language from filename extension "%s"' % (ext,))
         sys.exit(1)
 
     files = sorted(list(set(args.files)))
 
+    # Create a persistent session with custom headers.
+    session = requests.Session()
+    session.headers.update(_HEADERS)
+
     try:
-        login_reply = login_from_config(cfg)
+        login_reply = login_from_config(session, cfg)
     except ConfigError as exc:
         print(exc)
         sys.exit(1)
@@ -436,7 +403,7 @@ extension "%s"''' % (ext,))
         print('Login connection failed:', err)
         sys.exit(1)
 
-    if not login_reply.status_code == 200:
+    if login_reply.status_code != 200:
         print('Login failed.')
         if login_reply.status_code == 403:
             print('Incorrect username or password/token (403)')
@@ -452,15 +419,8 @@ extension "%s"''' % (ext,))
         confirm_or_die(problem, language, files, mainclass, tag)
 
     try:
-        result = submit(submit_url,
-                        login_reply.cookies,
-                        problem,
-                        language,
-                        files,
-                        mainclass,
-                        tag,
-                        args.assignment,
-                        args.contest)
+        result = submit(session, submit_url, problem, language, files, mainclass, tag,
+                        args.assignment, args.contest)
     except requests.exceptions.RequestException as err:
         print('Submit connection failed:', err)
         sys.exit(1)
@@ -486,7 +446,7 @@ extension "%s"''' % (ext,))
 
     if submission_url:
         print(submission_url)
-        if not show_judgement(submission_url, cfg):
+        if not show_judgement(session, submission_url, cfg):
             sys.exit(1)
 
 
