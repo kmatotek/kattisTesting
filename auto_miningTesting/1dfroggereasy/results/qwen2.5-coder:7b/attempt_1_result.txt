@@ -1,0 +1,22 @@
+Submission received. Submission ID: 16798996.
+Submission URL: https://open.kattis.com/submissions/16798996
+https://open.kattis.com/submissions/16798996
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [.?                                    ]  2 / 38
+Test cases: 
+Test cases: [....?                                 ]  5 / 38
+Test cases: 
+Test cases: [........?                             ]  9 / 38
+Test cases: 
+Test cases: [...........?                          ]  12 / 38
+Test cases: 
+Test cases: [.............x                        ]  14 / 38
+[31mWrong Answer (0.04 s)[0m

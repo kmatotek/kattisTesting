@@ -1,41 +1,40 @@
-Here's a Python program that reads input from standard input, processes the data according to the problem description, and writes output using `print()`:
+Here's a Python program that reads input from standard input and outputs the number of groups that will not be accepted into the theater:
 
 ```python
-# Read input values
+# Read input
 N, M = map(int, input().split())
 groups = list(map(int, input().split()))
 
 # Initialize variables
-seats_available = N
-groups_not_accepted = 0
+total_visited = 0
+rejected_groups = 0
 
 # Process each group in order
 for group_size in groups:
-    if group_size <= seats_available:
-        seats_available -= group_size
+    if total_visited + group_size > N:
+        rejected_groups += 1
     else:
-        groups_not_accepted += 1
+        total_visited += group_size
 
-# Output the number of groups not accepted
-print(groups_not_accepted)
+# Output the number of rejected groups
+print(rejected_groups)
 ```
 
 ### Explanation:
-
 1. **Reading Input:**
-   - The first line is split into two integers \( N \) and \( M \) which represent the number of seats in the theater and the number of visiting groups, respectively.
-   - The second line is split into a list of integers representing the sizes of each group.
+   - The first line contains two integers, `N` (the number of seats in the theater) and `M` (the number of visiting groups).
+   - The second line contains `M` integers representing the sizes of each group.
 
 2. **Initialization:**
-   - `seats_available` is initialized to \( N \), the total number of seats available.
-   - `groups_not_accepted` is initialized to 0 to count how many groups will not be accepted.
+   - `total_visited` keeps track of the total number of visitors currently in the theater.
+   - `rejected_groups` counts how many groups are rejected due to insufficient seats.
 
-3. **Processing Each Group:**
-   - For each group size in the list, check if there are enough seats available:
-     - If the group size is less than or equal to the number of seats available, subtract the group size from `seats_available`.
-     - If not, increment the count of `groups_not_accepted`.
+3. **Processing Groups:**
+   - Iterate through each group size in the order they signed up.
+   - If adding the current group's size to `total_visited` exceeds `N`, increment `rejected_groups`.
+   - Otherwise, add the current group's size to `total_visited`.
 
 4. **Output:**
-   - Finally, print the number of groups that will not be accepted.
+   - Print the number of rejected groups.
 
-This program reads input directly from standard input using `input()` and writes output to the console using `print()`. It adheres to the constraints and requirements specified in the problem statement.
+This program ensures that it reads input correctly and processes each group according to the problem statement, outputting the correct number of rejected groups.

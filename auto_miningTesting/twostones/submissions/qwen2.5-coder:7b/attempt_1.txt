@@ -1,0 +1,29 @@
+To solve this problem, we need to determine the winner of a game where Alice and Bob take exactly two consecutive stones from a sequence until no more such pairs exist. The player who faces an odd number of stones left wins.
+
+Here's the strategy:
+1. If the initial number of stones \( N \) is odd, Alice will always win because she can always force Bob to play with an even number of stones. When there are only two stones left, Bob will be forced to take them, leaving an odd number for Alice.
+2. If the initial number of stones \( N \) is even, Bob will always win because he can always force Alice to play with an odd number of stones. When there are only two stones left, Alice will be forced to take them, leaving an even number for Bob.
+
+This leads to a simple decision based on whether \( N \) is odd or even. Let's write the Python code to determine the winner:
+
+```python
+def determine_winner(N):
+    if N % 2 == 0:
+        return "Bob"
+    else:
+        return "Alice"
+
+# Read input from standard input
+N = int(input())
+
+# Determine and print the winner
+print(determine_winner(N))
+```
+
+### Explanation:
+- The function `determine_winner` takes an integer \( N \) as input.
+- It checks if \( N \) is even or odd using the modulus operator (`%`).
+- If \( N \) is even, it returns "Bob".
+- If \( N \) is odd, it returns "Alice".
+
+This solution is efficient with a time complexity of \( O(1) \) since it only involves a single calculation and does not require any loops or recursion. The input handling is done using Python's built-in `input()` function for standard input.

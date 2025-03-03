@@ -1,0 +1,24 @@
+Submission received. Submission ID: 16799013.
+Submission URL: https://open.kattis.com/submissions/16799013
+https://open.kattis.com/submissions/16799013
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [?                                     ]  0 / 38
+Test cases: 
+Test cases: [...?                                  ]  4 / 38
+Test cases: 
+Test cases: [......?                               ]  7 / 38
+Test cases: 
+Test cases: [.........?                            ]  10 / 38
+Test cases: 
+Test cases: [.............?                        ]  14 / 38
+Test cases: 
+Test cases: [.............x                        ]  14 / 38
+[31mWrong Answer (0.04 s)[0m

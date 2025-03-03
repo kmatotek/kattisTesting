@@ -4,7 +4,7 @@ import subprocess
 import re
 
 # List of models to test
-models = ["llama3"]
+models = ["qwen2.5-coder:7b"]
 
 # Get the last non-empty line from text
 def get_last_non_empty_line(text):

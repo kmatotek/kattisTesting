@@ -1,0 +1,27 @@
+I apologize for the confusion earlier. Let's correct the logic to ensure we always get the larger number if there's a tie.
+
+The previous code was almost correct but did not handle the tie case properly, leading to an incorrect result in some scenarios. Specifically, if `price` is exactly halfway between two multiples of 100, the original code would return the lower multiple instead of the higher one as required.
+
+Here’s the corrected version:
+
+```python
+# Read the input price from standard input
+price = int(input())
+
+# Calculate the lower multiple of 100 that is less than or equal to the given price
+lower_multiple = (price // 100) * 100
+
+# Calculate the upper multiple of 100 that is greater than the given price
+upper_multiple = lower_multiple + 100
+
+# Determine which multiple is closer to the given price
+if price - lower_multiple <= upper_multiple - price:
+    closest_price = lower_multiple if price - lower_multiple < upper_multiple - price else upper_multiple
+else:
+    closest_price = upper_multiple
+
+# Print the closest price ending in 99
+print(closest_price)
+```
+
+This corrected version ensures that if there's a tie (i.e., `price` is exactly halfway between two multiples of 100), the larger multiple (`upper_multiple`) will be chosen. This should correctly handle all provided test cases.
