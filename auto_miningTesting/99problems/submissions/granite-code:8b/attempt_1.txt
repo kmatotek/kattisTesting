@@ -1,0 +1,13 @@
+Here's one possible solution in Python:
+```python
+def round_up_to_99(price):
+    return round(price / 100) * 100 + 99
+input_price = int(input())
+output_price = round_up_to_99(input_price)
+print(output_price)
+```
+Here's an explanation of the code:
+- The function `round_up_to_99` takes a number as input and returns the nearest integer to it that ends in 99. It does this by dividing the number by 100, rounding up to the nearest integer using the built-in `round()` function, multiplying the result by 100, and adding 99.
+- The code reads input from the user using the `input()` function and stores it in the variable `input_price`. It then calls the `round_up_to_99` function with `input_price` as an argument and stores the result in the variable `output_price`.
+- Finally, the code prints the value of `output_price` to the console using the `print()` function.
+Note that this solution assumes that the input price is always a positive integer between 1 and 10,000 (inclusive). If you need to handle other ranges or different data types, you may need to modify the code accordingly.

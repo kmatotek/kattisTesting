@@ -1,0 +1,16 @@
+Here's the Python code that solves this problem:
+```python
+import sys
+input = sys.stdin.readline
+
+def optimal_stone_game(n):
+    if n % 2 == 1:
+        return "Alice"
+    else:
+        return "Bob"
+
+if __name__ == "__main__":
+    n = int(input())
+    print(optimal_stone_game(n))
+```
+This code defines a function `optimal_stone_game` that takes an integer `n` as input and returns the winner of the game. If `n` is odd, the function returns "Alice", otherwise it returns "Bob". The main part of the code reads the input from standard input using `input()`, calls the `optimal_stone_game` function with the input, and prints the output to standard output using `print()`.

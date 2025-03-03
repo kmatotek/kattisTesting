@@ -1,0 +1,5 @@
+Here's a possible implementation of the program using Python:
+```python
+print("Hello World!")
+```
+This code simply prints the string "Hello World!" to the standard output. It does not read any input from the user or use any external libraries.

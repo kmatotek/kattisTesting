@@ -1,0 +1,21 @@
+Here is the corrected Python code for this problem:
+
+```python
+def main():
+    N, M = map(int, input().split())
+    groups = list(map(int, input().split()))
+    num_accepted = 0
+
+    for i, group in enumerate(groups):
+        if N - sum(groups[:i]) >= group:
+            num_accepted += 1
+
+    print(M - num_accepted)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+
+The mistake was that the condition `N - sum(groups[:num_accepted]) >= group` should have been `N - sum(groups[:i]) >= group`, where `i` is the index of the current group being considered. This ensures that each group gets a chance to be accepted based on the available seats before considering the next group.
