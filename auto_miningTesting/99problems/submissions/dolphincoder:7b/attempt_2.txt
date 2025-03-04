@@ -1,0 +1,24 @@
+Apologies for the oversight on my part. The error was due to incorrect handling of numbers with two digits in their tens place. For example, consider the input number 100. After processing it as per our algorithm, we would get `99`, which is incorrect as `100` ends in $99$.
+
+Let's modify our approach slightly by checking if the last digit (modulo 10) is less than 5 before determining if we should round up or down. This way, we can correctly handle numbers with two digits in their tens place. Here's a corrected version of the program:
+
+```python
+def find_nearest(n):
+    last_digit = n % 10
+    if last_digit < 5 and str(n)[-2:] != '99':
+        return (int(str(n)[:-2]) + 1) * 100 - 1
+    
+    if last_digit >= 5 and str(n)[-2:] != '99':
+        return int(str(n)[:-2]) * 100
+        
+    return n
+
+# Test the function with sample inputs and expected outputs
+test_cases = [(10, 99), (249, 299), (10000, 9999)]
+for test_case in test_cases:
+    actual_result = find_nearest(test_case[0])
+    assert actual_result == test_case[1], f'Test case {test_case} failed with output {actual_result}'
+print('All test cases passed!')
+```
+
+I hope this new version of the program should solve your problem. Please let me know if you encounter any other issues or have questions regarding this Python solution.

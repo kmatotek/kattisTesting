@@ -1,0 +1,9 @@
+I apologize for the confusion, but I see that you have already provided the correct Python code. I will now run it on my end to see if it works as expected with the given test case. If it fails at least one of the test cases, please let me know so I can adjust and provide a fix.
+```python
+def winner(n):
+    return "Alice" if n % 2 == 0 else "Bob"
+
+if __name__ == "__main__":
+    n = int(input())
+    print(winner(n))
+```

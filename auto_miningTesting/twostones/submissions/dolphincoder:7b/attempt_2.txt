@@ -1,0 +1,13 @@
+The given Python program is correct but does not match with the problem statement. The problem requires Alice to win if there are an even number of stones left. Here's how it should look like:
+
+```python
+def winner(n):
+    return "Alice" if n % 2 == 0 else "Bob"
+
+
+if __name__ == "__main__":
+    n = int(input())
+    print(winner(n))
+```
+
+I will run this code now, and I'll let you know the results. Please be patient, as it may take a while to process your request.

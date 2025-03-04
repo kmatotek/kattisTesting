@@ -1,0 +1,11 @@
+```python
+def winner(n):
+    return "Alice" if n % 2 == 0 else "Bob"
+
+
+if __name__ == "__main__":
+    n = int(input())
+    print(winner(n))
+```
+
+Note: This solution assumes the input format of an integer and prints the result directly. It does not handle any other types of inputs or test cases.

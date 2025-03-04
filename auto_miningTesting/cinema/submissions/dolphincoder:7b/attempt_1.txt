@@ -1,0 +1,42 @@
+Here is the Python program for this problem:
+
+```python
+# Import necessary libraries
+from collections import deque
+
+# Function to check if all groups can be accepted into the theater with given seats
+def can_enter(group_sizes, n):
+    q = deque(group_sizes) # Initialize a queue with group sizes
+    
+    count = 0 # Keep track of the number of groups that cannot enter
+    while q:
+        size = q.popleft() # Get the next group size
+        
+        if len(q) + 1 <= n - size:
+            # If there are enough empty seats to accommodate this group, it will be accepted
+            count += 1
+        elif q and size < q[0]:
+            # If there aren't any more groups to check or the current group is smaller than the next one in line, we can leave
+            break
+    
+    return count
+
+
+# Main function to read input and call the can_enter function
+def main():
+    n, m = map(int, input().split())  # Read number of seats and number of groups from input
+    group_sizes = list(map(int, input().split()))  # Read sizes of all visiting groups
+    
+    print(can_enter(group_sizes, n))
+
+
+# Call the main function
+if __name__ == '__main__':
+    main()
+```
+
+This program defines a `can_enter` function that takes in the group sizes and number of seats as inputs. It creates a queue (using the `deque` class from the `collections` module) to keep track of the order of groups, and then iterates through each group size checking if it can be accommodated. If not, the function moves on to the next group size in line. This process continues until all groups have been checked or there aren't enough empty seats left for another group.
+
+The `main` function reads input from standard input and calls the `can_enter` function with the appropriate arguments. Finally, it prints the result obtained by calling `can_enter`.
+
+To test this program, you can run it directly in a Python environment or save it to an `.py` file and execute it using the command `python filename.py`, replacing 'filename' with the name of your file. Make sure that you have all necessary libraries installed before running the code. You will need to input the values for $N$ and $M$, as well as the sizes of each group, separated by spaces or line breaks. The output will be the number of groups that cannot enter the theater.

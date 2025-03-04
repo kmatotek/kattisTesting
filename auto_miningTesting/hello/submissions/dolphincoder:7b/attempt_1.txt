@@ -1,0 +1,26 @@
+Below is a simple Python program that prints "Hello World!" to standard output. 
+
+```python
+def main():
+    print("Hello World!")
+    return
+
+if __name__ == "__main__":
+    main()
+```
+
+In this code, the function `main()` does the actual work of printing "Hello World!". By calling it at the end of the program as per the typical conventions of Python scripts, we ensure that it is executed when the script is run.
+
+To run the script on your local machine, you can save the above code to a file with extension `.py` (e.g., `hello_world.py`), and then use the following command in your terminal:
+
+```bash
+python3 hello_world.py
+```
+
+Replace 'python3' with 'python' if your Python interpreter is version 2.x.
+
+Please note that this code does not read any input or take any arguments from the command line. It simply prints "Hello World!" to the standard output.
+
+The script works by defining a function `main()` which prints the desired string, and then calling it at the end of the program as per typical conventions for Python scripts. The script uses a `if __name__ == "__main__":` condition to determine whether or not it has been executed directly. This allows us to run the script using `python3 hello_world.py`, without being confused by any other parts of the code that may be imported and used elsewhere in the same script.
+
+This program fulfills all the requirements mentioned in your problem statement, as it reads no input, prints "Hello World!" to standard output, uses internal Python libraries only, and does not include hardcoded test cases or example inputs in its code.
