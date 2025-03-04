@@ -1,0 +1,22 @@
+It seems like there's an off-by-one error in the calculation for the lower price point when N doesn't end with 99. The original line of code: `lower = (N // 100) * 100 + 99 if N % 100 < 99 else ((N // 100) - 1) * 100 + 99` could subtract an extra 1 from the year when it's not necessary. This will result in a lower year that doesn't end with 99 being preferred over one that does, when both are equally close to N. Here is corrected version:
+
+```python
+def closest_price(N):
+    # If the input already ends with 99, return it directly
+    if str(N)[-2:] == '99':
+        return N
+
+    # Calculate both nearest upper and lower number that ends with 99.
+    lower = (N // 100) * 100 + 99 if N % 100 < 99 else ((N // 100)) * 100 + 99
+    upper = (N // 100) * 100 + 99 if N % 100 > 99 else ((N // 100) + 1) * 100 + 99
+
+    # Return the nearest or upper one in case of a tie.
+    return lower if abs(N - lower) <= abs(N - upper) else upper
+
+def main():
+    N = int(input())
+    print(closest_price(N))
+
+if __name__ == "__main__":
+    main()
+```

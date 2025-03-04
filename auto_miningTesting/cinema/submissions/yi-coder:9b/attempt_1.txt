@@ -1,0 +1,20 @@
+Here is a Python solution for the problem:
+
+```python
+# Read input data
+N, M = map(int,input().split())
+groups = list(map(int,input().split()))
+
+# Initialize counter of rejected groups and available seats
+rejected_groups = 0
+seats_left = N
+
+for group in groups:
+    if group > seats_left:
+        rejected_groups += 1
+    else:
+        seats_left -= group
+
+print(rejected_groups)
+```
+This solution works by iterating over the list of visiting groups. For each group, it checks if there are enough available seats to let them in. If not, it increments a counter for rejected groups; otherwise, it decreases the number of available seats accordingly. At the end, it prints out the number of rejected groups.

@@ -1,0 +1,15 @@
+The game described here is simply a case of parity. In other words, the player who takes the last stone (i.e. the one with an odd number) will win. This will be true no matter how the game is played optimally by Alice and Bob. Therefore, if N is odd then Alice wins; otherwise, Bob wins.
+
+Here's a simple Python program that calculates the winner based on this principle:
+
+```python
+def stone_game():
+    N = int(input())
+    if N % 2 == 0:
+        print('Bob')
+    else:
+        print('Alice')
+
+stone_game()
+```
+This program reads the number of stones from standard input, calculates their parity and prints "Alice" if it's odd or "Bob" if it's even.
