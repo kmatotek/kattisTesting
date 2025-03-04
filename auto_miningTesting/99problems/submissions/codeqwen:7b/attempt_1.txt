@@ -1,0 +1,13 @@
+Here is a Python program that solves the problem:
+
+```python
+n = int(input())
+lowest_99 = (n//100)*100 + 99
+highest_99 = lowest_99 + 99
+if n < lowest_99:
+    print(highest_99)
+else:
+    print(lowest_99)
+```
+
+The program works by first calculating the highest number less than or equal to $N$ that ends in $99$, and the lowest number greater than $N$ that ends in $99$. Then it checks which of these two numbers is closer to $N$ and prints it. If they are equally close, it prints the larger of the two.

@@ -1,0 +1,7 @@
+Here is a simple program in Python that meets all your requirements:
+
+```python
+print("Hello World!")
+```
+
+This program simply prints out the text "Hello World!" to the standard output. The `input()` function isn't used here at all since there are no inputs needed for this problem.

@@ -1,0 +1,14 @@
+The problem with your previous solution was that it incorrectly added 99 to the highest possible $N$ (which is already ending in 99). The correct way to calculate the next number less than or equal to $N$ ending in 99 would be to remove all digits after the first two and add 99. In other words, if $N = xxyy$, you should subtract $10yy$ from it.
+
+Here is the corrected code:
+
+```python
+n = int(input())
+next_closest_99 = n - (n % 100) + 99
+if next_closest_99 < n:
+    print(next_closest_99)
+else:
+    print(next_closest_99 - 99)
+```
+
+This updated code calculates the "next closest 99" by subtracting all digits after the first two from $N$ and then adding 99. If the result is less than $N$, it means that $N$ already ends in 99, so it just subtracts 99 to get the previous number ending in 99. Otherwise, it simply returns the calculated value as the next closest number.

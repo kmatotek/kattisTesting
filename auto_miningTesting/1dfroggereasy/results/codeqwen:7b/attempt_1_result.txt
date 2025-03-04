@@ -1,0 +1,38 @@
+Submission received. Submission ID: 16807505.
+Submission URL: https://open.kattis.com/submissions/16807505
+https://open.kattis.com/submissions/16807505
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [?                                     ]  1 / 38
+Test cases: 
+Test cases: [...?                                  ]  4 / 38
+Test cases: 
+Test cases: [......?                               ]  7 / 38
+Test cases: 
+Test cases: [..........?                           ]  11 / 38
+Test cases: 
+Test cases: [..............?                       ]  15 / 38
+Test cases: 
+Test cases: [.................?                    ]  18 / 38
+Test cases: 
+Test cases: [....................?                 ]  21 / 38
+Test cases: 
+Test cases: [.......................?              ]  24 / 38
+Test cases: 
+Test cases: [...........................?          ]  28 / 38
+Test cases: 
+Test cases: [..............................?       ]  31 / 38
+Test cases: 
+Test cases: [.................................?    ]  34 / 38
+Test cases: 
+Test cases: [......................................]  38 / 38
+[32mAccepted (0.04 s)[0m

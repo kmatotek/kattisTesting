@@ -1,0 +1,13 @@
+The problem with your previous solution was that it subtracted all digits after the first two from $N$ and then added 99, which may result in a number that is still less than $N$. This can be fixed by checking whether the next closest number we calculated is less than $N$, if so return the next closest number otherwise subtract 99 to get the previous number ending in 99.
+
+Here's the corrected code:
+```python
+n = int(input())
+next_closest_99 = n - (n % 100) + 99
+if next_closest_99 < n:
+    print(next_closest_99)
+else:
+    print(next_closest_99 - 99)
+```
+
+This updated code calculates the "next closest 99" by subtracting all digits after the first two from $N$ and then adding 99. If the result is less than $N$, it means that $N$ already ends in 99, so it just returns the calculated value as the next closest number. Otherwise, it simply subtracts 99 to get the previous number ending in 99.

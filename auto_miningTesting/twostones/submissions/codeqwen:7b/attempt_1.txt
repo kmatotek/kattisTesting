@@ -1,0 +1,13 @@
+Here is a Python program that solves the problem:
+
+```python
+N = int(input())
+
+if N % 4 == 0 or N % 4 == 1:
+    print("Bob")
+else:
+    print("Alice")
+```
+This program reads an integer `N` from standard input, checks if `N` is divisible by 4 or 1, and then outputs "Bob" if it's true, otherwise it outputs "Alice".
+
+The reason this works is that the problem is based on the fact that a person wins if they are the first to take two consecutive stones, which means they must be able to do so from the very beginning. If the number of stones is divisible by 4 or 1, then Alice will have the opportunity to make the first move, otherwise Bob will. Since both players play optimally and follow their strategy consistently, the result will always come down to whether Alice can force a win with the first move or not.
