@@ -2,42 +2,46 @@ def open_safe():
     # Read the initial configuration of the safe from input
     grid = [list(map(int, input().split())) for _ in range(3)]
     
-    # Check if the safe is already open
-    if all(all(x == 0 for x in row) for row in grid):
-        print(0)
-        return
-    
-    # Initialize a variable to count the number of button pushes
-    push_count = 0
-    
-    # Define a function to increment a digit and handle wrapping around
+    # Function to increment a digit and handle wrapping around
     def increment_digit(digit):
         return (digit + 1) % 4
     
-    # Define a function to find the minimum number of increments needed for a row or column
-    def min_increments(target, current):
-        if target <= current:
-            return current - target
-        else:
-            return 4 - (target - current)
+    # Function to increment all digits in the same row
+    def increment_row(row_index):
+        for j in range(3):
+            grid[row_index][j] = increment_digit(grid[row_index][j])
     
-    # Calculate the total increments needed for each row and column
-    total_increments = 0
-    for i in range(3):
-        row_increments = sum(min_increments(0, grid[i][j]) for j in range(3))
-        col_increments = sum(min_increments(0, grid[j][i]) for j in range(3))
-        total_increments += row_increments + col_increments
+    # Function to increment all digits in the same column
+    def increment_column(col_index):
+        for i in range(3):
+            grid[i][col_index] = increment_digit(grid[i][col_index])
     
-    # If the total increments are less than or equal to zero, the safe cannot be opened
-    if total_increments <= 0:
-        print(-1)
-        return
-    
-    # Calculate the number of button pushes needed
-    push_count = (total_increments - 1) // 9 + 1
-    
-    # Output the result
-    print(push_count)
+    # Try to open the safe by pushing buttons until all digits are zero
+    count = 0
+    while True:
+        try:
+            # Find the first non-zero digit
+            for i in range(3):
+                for j in range(3):
+                    if grid[i][j] != 0:
+                        # Push the button at position (i, j)
+                        increment_row(i)
+                        increment_column(j)
+                        count += 1
+                        break
+            else:
+                # If no non-zero digit is found, the safe cannot be opened
+                print(-1)
+                return
+            
+            # Check if the safe is open
+            if all(all(x == 0 for x in row) for row in grid):
+                print(count)
+                return
+        
+        except KeyboardInterrupt:
+            # Optional: Allow interruption to stop the program gracefully
+            print(count)
+            return
 
-# Call the function to execute
 open_safe()

@@ -1,59 +1,33 @@
 ```python
-def jetpack_joyride(N, field):
+def solve_jetpack_joyride(N, field):
+    def is_obstacle(x, y):
+        return field[y][x] == 'X'
+
     moves = []
-    position = 0
-    state = 'ground'  # State can be 'ground', 'flying_up', or 'flying_down'
-    time = 0
-    
-    for column in range(N):
-        if state == 'ground':
-            # Check each row in the current column from bottom to top
-            for row in range(9, -1, -1):
-                if field[row][column] == 'X':
-                    break
-                position = row
-                time += 1
-                if row == 0:
-                    state = 'flying_up'
-                    moves.append((time, 1))
-                    break
-        elif state == 'flying_up':
-            # Continue flying up until the top is reached
-            position = 9
-            time += 1
-            if column == N - 1 or field[9][column + 1] == 'X':
-                state = 'ground'
-        elif state == 'flying_down':
-            # Check each row in the current column from top to bottom
-            for row in range(0, 10):
-                if field[row][column] == 'X':
-                    break
-                position = row
-                time += 1
-                if row == 9:
-                    state = 'ground'
-                    moves.append((time, 1))
-                    break
-    
-    return len(moves), moves
+    t = 0  # Current time
+    x = 0  # Current column
+    while x < N:
+        # Check if there's an obstacle in the next square to the right
+        if is_obstacle(x + 1, 9):
+            # If there's an obstacle, we need to use the jetpack
+            # Calculate how long we need to press the screen to jump over it
+            press_duration = x - len(moves) * 2
+            moves.append((t, press_duration))
+            t += press_duration + 1  # Update time after pressing and lifting
+        else:
+            # If no obstacle, just move normally
+            t += 1
+        x += 1  # Move to the next column
 
-# Reading input
-import sys
-input = sys.stdin.read
-data = input().split()
+    # Output the result
+    print(len(moves))
+    for (time, duration) in moves:
+        print(time, duration)
 
-N = int(data[0])
-field = []
-index = 1
-for i in range(10):
-    field.append(list(data[index]))
-    index += 1
+# Read input
+N = int(input().strip())
+field = [input().strip() for _ in range(10)]
 
-# Get the result
-P, move_series = jetpack_joyride(N, field)
-
-# Output the result
-print(P)
-for move in move_series:
-    print(move[0], move[1])
+# Solve the problem
+solve_jetpack_joyride(N, field)
 ```

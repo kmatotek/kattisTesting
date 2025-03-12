@@ -1,48 +1,46 @@
+The problem is to determine the minimum total travel distance a postal truck must cover to deliver mail to various locations from a single post office located at the origin, and return to the post office. The truck has a limited carrying capacity, and it may need to return to the post office for reloading after reaching its capacity.
+
+## Solution Strategy
+
+The solution involves dynamic programming to efficiently calculate the minimum travel distance. We will maintain a table `dp` where `dp[j]` represents the minimum distance traveled to deliver all mail up to the current location considering that the truck can carry `j` letters at most. The state transition involves deciding whether to deliver more mail at the current location or move on to the next based on the truck's capacity.
+
+## Steps:
+1. Initialize a list `dp` of size `K+1` (where `K` is the carrying capacity) with infinity (`float('inf')`) since initially, no delivery can be made.
+2. Set `dp[0] = 0` because no travel is needed if no mail is to be delivered.
+3. For each location and its corresponding load, update the `dp` table to reflect the minimum distance by considering:
+   - Delivering all possible loads up to the current capacity without reloading at this location.
+   - Moving to the next location with some remaining capacity from previous deliveries.
+
+## Implementation
+
 ```python
-def minimum_total_travel_distance(N, K, deliveries):
-    # Initialize the current position at the post office (origin)
-    current_position = 0
-    total_distance = 0
-    remaining_capacity = K
+def postal_delivery(n, k, deliveries):
+    # Initialize the dp array where dp[j] is the minimum distance to deliver mail with j capacity left in the truck
+    dp = [float('inf')] * (k + 1)
+    dp[0] = 0  # No cost if no mail needs to be delivered
     
-    # Sort deliveries by location to optimize the route
-    deliveries.sort()
+    # Process each delivery location
+    for loc, load in deliveries:
+        # Traverse from the current capacity backwards to prevent overwriting results of this round
+        for j in range(k - load, -1, -1):
+            if dp[j] != float('inf'):
+                new_cost = dp[j] + 2 * abs(loc)  # Cost to deliver all mail at this location and return
+                if new_cost < dp[j + load]:
+                    dp[j + load] = new_cost
     
-    # Iterate through each delivery point
-    for location, letters in deliveries:
-        # Check if the truck needs to return to the post office to reload
-        if letters > remaining_capacity:
-            # Calculate the distance to go back to the post office
-            total_distance += 2 * current_position
-            # Reset the truck's capacity and position
-            remaining_capacity = K
-            current_position = 0
-        
-        # Deliver the letters at the current location
-        current_position = location
-        remaining_capacity -= letters
-    
-    # After all deliveries, return to the post office
-    total_distance += 2 * current_position
-    return total_distance
+    # The answer is the minimum cost to deliver all mail and return with no capacity left in the truck
+    return dp[k]
 
-# Reading input
-import sys
-input = sys.stdin.read
-data = input().split()
-
-N = int(data[0])
-K = int(data[1])
-
+# Input reading
+n, k = map(int, input().split())
 deliveries = []
-index = 2
-for _ in range(N):
-    x_j = int(data[index])
-    t_j = int(data[index + 1])
-    deliveries.append((x_j, t_j))
-    index += 2
+for _ in range(n):
+    x, t = map(int, input().split())
+    deliveries.append((x, t))
 
-# Calculate the minimum total travel distance
-result = minimum_total_travel_distance(N, K, deliveries)
+# Calculate the minimum travel distance
+result = postal_delivery(n, k, deliveries)
 print(result)
 ```
+
+This implementation reads the number of delivery locations `n` and the carrying capacity `k`, then reads each delivery location and the corresponding load. It uses the `postal_delivery` function to compute and print the minimum total travel distance needed for the delivery route. The function uses dynamic programming to efficiently compute the solution.

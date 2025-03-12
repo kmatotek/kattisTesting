@@ -1,46 +1,27 @@
-def minimum_total_travel_distance(N, K, deliveries):
-    # Initialize the current position at the post office (origin)
-    current_position = 0
-    total_distance = 0
-    remaining_capacity = K
+def postal_delivery(n, k, deliveries):
+    # Initialize the dp array where dp[j] is the minimum distance to deliver mail with j capacity left in the truck
+    dp = [float('inf')] * (k + 1)
+    dp[0] = 0  # No cost if no mail needs to be delivered
     
-    # Sort deliveries by location to optimize the route
-    deliveries.sort()
+    # Process each delivery location
+    for loc, load in deliveries:
+        # Traverse from the current capacity backwards to prevent overwriting results of this round
+        for j in range(k - load, -1, -1):
+            if dp[j] != float('inf'):
+                new_cost = dp[j] + 2 * abs(loc)  # Cost to deliver all mail at this location and return
+                if new_cost < dp[j + load]:
+                    dp[j + load] = new_cost
     
-    # Iterate through each delivery point
-    for location, letters in deliveries:
-        # Check if the truck needs to return to the post office to reload
-        if letters > remaining_capacity:
-            # Calculate the distance to go back to the post office
-            total_distance += 2 * current_position
-            # Reset the truck's capacity and position
-            remaining_capacity = K
-            current_position = 0
-        
-        # Deliver the letters at the current location
-        current_position = location
-        remaining_capacity -= letters
-    
-    # After all deliveries, return to the post office
-    total_distance += 2 * current_position
-    return total_distance
+    # The answer is the minimum cost to deliver all mail and return with no capacity left in the truck
+    return dp[k]
 
-# Reading input
-import sys
-input = sys.stdin.read
-data = input().split()
-
-N = int(data[0])
-K = int(data[1])
-
+# Input reading
+n, k = map(int, input().split())
 deliveries = []
-index = 2
-for _ in range(N):
-    x_j = int(data[index])
-    t_j = int(data[index + 1])
-    deliveries.append((x_j, t_j))
-    index += 2
+for _ in range(n):
+    x, t = map(int, input().split())
+    deliveries.append((x, t))
 
-# Calculate the minimum total travel distance
-result = minimum_total_travel_distance(N, K, deliveries)
+# Calculate the minimum travel distance
+result = postal_delivery(n, k, deliveries)
 print(result)

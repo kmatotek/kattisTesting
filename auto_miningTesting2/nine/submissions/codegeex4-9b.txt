@@ -1,14 +1,14 @@
 ```python
-def count_positive_numbers_without_n(d):
+def count_numbers_without_n(d):
     MOD = 1000000007
     if d == 1:
         return 9
-    elif d == 0:
-        return 1
+    elif d == 2:
+        return 81
     else:
-        return (pow(9, d - 1, MOD) + count_positive_numbers_without_n(d - 1)) % MOD
+        return (90 * pow(9, d-2, MOD)) % MOD
 
-def solve():
+def main():
     import sys
     input = sys.stdin.read
     data = input().split()
@@ -16,8 +16,11 @@ def solve():
     results = []
     for i in range(1, T + 1):
         d = int(data[i])
-        results.append(count_positive_numbers_without_n(d))
+        result = count_numbers_without_n(d)
+        results.append(result)
     for result in results:
         print(result)
 
+if __name__ == "__main__":
+    main()
 ```

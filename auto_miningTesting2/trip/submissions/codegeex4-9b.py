@@ -1,22 +1,23 @@
-def main():
+def calculate_min_exchange(trip_expenses):
+    total_cost = sum(trip_expenses)
+    average_cost = total_cost / len(trip_expenses)
+    exchange_total = 0
+    
+    for cost in trip_expenses:
+        exchange_total += (cost - average_cost) * 100
+    
+    return round(abs(exchange_total) / 100, 2)
+
+def process_input():
     while True:
         n = int(input())
         if n == 0:
             break
-        
-        expenses = []
+        trip_expenses = []
         for _ in range(n):
             expense = float(input())
-            expenses.append(expense)
-        
-        total_expenses = sum(expenses)
-        average_expense = total_expenses / n
-        rounding_diff = round(average_expense) - average_expense
-        
-        exchange_amounts = [round((expense - average_expense + rounding_diff), 2) for expense in expenses]
-        total_exchange = round(sum(exchange_amounts), 2)
-        
-        print(f'${total_exchange:.2f}')
+            trip_expenses.append(expense)
+        min_exchange = calculate_min_exchange(trip_expenses)
+        print(f'${min_exchange:.2f}')
 
-if __name__ == "__main__":
-    main()
+process_input()
