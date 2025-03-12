@@ -6,13 +6,13 @@ import subprocess
 ## Each problem folder must have a 'problem_text' of the problem's description ##
 ## Must have a .kattisrc configuration file in root directory ##
 
-model = "qwen2.5-coder:7b" 
+model = "qwen2.5-coder:7b"  # Example model name; can also be codellama:7b, codegemma:7b, etc.
 
 # Helper function to format the model name for file naming
 def format_model_name(model_name):
     if ":" in model_name:
         parts = model_name.split(":", 1)
-        return f"{parts[0]}({parts[1]})"
+        return f"{parts[0]}-{parts[1]}"
     else:
         return model_name
 
@@ -125,4 +125,4 @@ for folder_name in os.listdir(dir_path):
     with open(result_path, 'w') as stdout_file:
         stdout_file.write(result.stdout)  # Write stdout to a file
     
-    break  # Only iterate once
+    # break  # Only iterate once
