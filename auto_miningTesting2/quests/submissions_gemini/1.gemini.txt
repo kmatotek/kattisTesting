@@ -1,0 +1,85 @@
+```python
+def calculate_max_xps(num_quests, xps_per_level, xp_multiplier, quests):
+    """
+    Calculates the maximum possible XPs earned by completing all quests
+    in an optimal order.
+
+    Args:
+        num_quests (int): The number of quests.
+        xps_per_level (int): XPs required to reach each level.
+        xp_multiplier (int): XP multiplier for completing quests below target level.
+        quests (list): List of tuples, each containing (xps, target_level) for a quest.
+
+    Returns:
+        int: The maximum possible XPs earned.
+    """
+
+    quests.sort(key=lambda q: q[1])  # Sort quests by target level ascending
+    total_xps = 0
+    current_level = 0
+    earned_xps = 0
+
+    for i in range(num_quests):
+        xps, target_level = quests[i]
+
+        if current_level >= target_level:
+            earned_xps += xps
+        else:
+            earned_xps += xps * xp_multiplier
+
+        total_xps = earned_xps
+        current_level = earned_xps // xps_per_level  # Update current level
+
+    return total_xps
+
+
+def main():
+    """
+    Reads input, processes it, and prints the result.
+    """
+
+    num_quests, xps_per_level, xp_multiplier = map(int, input().split())
+    quests = []
+    for _ in range(num_quests):
+        xps, target_level = map(int, input().split())
+        quests.append((xps, target_level))
+
+    max_xps = calculate_max_xps(
+        num_quests, xps_per_level, xp_multiplier, quests
+    )
+    print(max_xps)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+**Explanation:**
+
+1. **`calculate_max_xps(num_quests, xps_per_level, xp_multiplier, quests)` Function:**
+   - Takes input parameters: number of quests, XPs per level, XP multiplier, and the list of quests (each quest as a tuple of (XPs, target level)).
+   - Sorts the `quests` list in ascending order of their target difficulty level (`d`). This is because it's generally more beneficial to complete lower-level quests first to gain XPs faster.
+   - Initializes `total_xps`, `current_level`, and `earned_xps` to 0.
+   - Iterates through each quest in the sorted `quests` list:
+     - If the current level is greater than or equal to the quest's target level, add the normal XP amount (`xps`) to `earned_xps`.
+     - Otherwise (current level is lower), add the bonus XP amount (`xps * xp_multiplier`) to `earned_xps`.
+     - Update `total_xps` with the current `earned_xps`.
+     - Calculate the `current_level` by dividing the `earned_xps` by `xps_per_level` (integer division to get the floor value).
+   - Returns the `total_xps` earned after processing all quests.
+
+2. **`main()` Function:**
+   - Reads the input values: `num_quests`, `xps_per_level`, `xp_multiplier`.
+   - Creates an empty list `quests` to store the quest details.
+   - Reads the details of each quest (XPs and target level) and appends them as a tuple to the `quests` list.
+   - Calls the `calculate_max_xps` function, passing the necessary arguments.
+   - Prints the returned `max_xps`, which represents the maximum possible XPs earned.
+
+3. **Running the Code:**
+   - The `if __name__ == "__main__":` block ensures that the `main()` function is called only when the script is executed directly (not imported as a module).
+
+**Key Points:**
+
+- **Sorting:** Sorting quests by target difficulty level is crucial for optimizing XP gain.
+- **Level Calculation:** The code efficiently updates the `current_level` after each quest to ensure accurate XP calculation.
+- **Clear Function Separation:** The code is well-organized into functions, making it more readable and maintainable.
+- **No External Libraries:** Only built-in Python features are used, as requested.

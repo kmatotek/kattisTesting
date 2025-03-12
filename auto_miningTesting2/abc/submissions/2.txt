@@ -1,0 +1,30 @@
+Here is a python solution:
+
+```python
+def rearrange_numbers():
+    numbers = list(map(int, input().split()))
+    order = list(input().strip())
+    numbers.sort()
+    mapping = {'A': numbers[0], 'B': numbers[1], 'C': numbers[2]}
+    result = [str(mapping[i]) for i in order]
+    print(' '.join(result))
+
+rearrange_numbers()
+```
+
+In this program, first it reads the three numbers and the order of letters. Then it sort the numbers and map each number to one of the letters 'A', 'B', 'C'. After this, it generates the desired order according to the request and prints it.
+
+For example:
+
+If you input:
+
+```
+1 3 2
+BCA
+```
+
+The output will be:
+
+```
+2 3 1
+```

@@ -1,0 +1,27 @@
+Here is a Python solution for your problem:
+
+```python
+def max_k_collections(n, collections):
+    for i in xrange(n):
+        shapes = [0]*37
+        decors = [0]*37
+        for shape, decor in collections[i]:
+            shapes[shape] += 1
+            decors[decor] += 1
+        shapes.sort()
+        decors.sort()
+        for k in xrange(36, 0, -1):
+            if sum(shapes[-k:]) >= k and sum(decors[-k:]) >= k:
+                print(k)
+                break
+                
+n = 3
+collections = [
+    [(1,1), (2,2), (3,3)],
+    [(1,2), (2,3), (3,4)],
+    [(1,1), (2,2), (3,3), (4,4), (5,5)]
+]
+max_k_collections(n, collections)
+```
+
+In this solution, the function `max_k_collections` iterates over the list of collections. For each collection, it first counts the frequency of each shape and each decoration. Then it sorts those frequencies in ascending order. After that, it checks from highest possible $k$ (i.e., 36) to the lowest one, whether there are $k$ shapes and $k$ decorations for which Mr Cheng's collection contains all $k \cdot k$ combinations of those shapes and decorations. As soon as it finds such $k$, it prints it and breaks the loop. If it doesn't find any such $k$, it simply goes on to the next collection.

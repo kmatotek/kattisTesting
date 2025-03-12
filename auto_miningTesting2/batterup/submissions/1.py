@@ -1,0 +1,5 @@
+n = int(input())
+b = list(map(int, input().split()))
+official_ab = len([x for x in b if x != -1])
+total_bases = sum([x for x in b if x != -1])
+print(total_bases / official_ab)

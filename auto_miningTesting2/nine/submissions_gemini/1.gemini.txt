@@ -1,0 +1,61 @@
+```python
+def calculate_count(num_of_digits):
+  """
+  Calculates the count of positive numbers with num_of_digits digits that don't contain a '9'.
+
+  Args:
+    num_of_digits: The number of digits.
+
+  Returns:
+    The count of positive numbers modulo 1,000,000,007.
+  """
+  total_count = 8  # Start with 8 for the first digit (1-8)
+  current_count = 9  # 9 choices (0-8) for the remaining digits
+
+  for _ in range(1, num_of_digits):
+    total_count = (total_count * current_count) % 1000000007
+
+  return total_count
+
+
+def main():
+  """
+  Handles input and output for the program.
+  """
+  test_cases = int(input())
+  for _ in range(test_cases):
+    digits = int(input())
+    result = calculate_count(digits)
+    print(result)
+
+
+if __name__ == "__main__":
+  main()
+```
+
+**Explanation:**
+
+1. **`calculate_count(num_of_digits)` function:**
+   - Takes the number of digits (`num_of_digits`) as input.
+   - Initializes `total_count` to 8, representing the possible choices (1-8) for the first digit (since it can't be 0 or 9).
+   - Initializes `current_count` to 9, representing the possible choices (0-8) for each subsequent digit.
+   - Iterates from the second digit to the last digit:
+     - Multiplies `total_count` by `current_count` to get the count for the current number of digits.
+     - Takes the modulo 1,000,000,007 to avoid overflow.
+   - Returns the final `total_count`.
+
+2. **`main()` function:**
+   - Reads the number of test cases (`test_cases`).
+   - Iterates through each test case:
+     - Reads the number of digits (`digits`) for the current case.
+     - Calls the `calculate_count` function to get the count.
+     - Prints the result for the current test case.
+
+3. **`if __name__ == "__main__":` block:**
+   - Ensures that the `main()` function is called only when the script is executed directly.
+
+**Key points:**
+
+- The code uses clear variable names and function names.
+- It only uses internal Python libraries.
+- Modulo operation (`% 1000000007`) is used to avoid integer overflow for large results. 

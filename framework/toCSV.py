@@ -82,7 +82,7 @@ def process_problem_folder(folder_path, model, attempts=3):
     return attempt_data, passed_with_prompting, best_attempt
 
 def main():
-    model = "qwen2.5-coder:7b"
+    model = "codeqwen:7b"
     base_dir = "./auto_miningTesting"
     attempts = 3
     

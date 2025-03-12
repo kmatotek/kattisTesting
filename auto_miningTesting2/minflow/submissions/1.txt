@@ -1,0 +1,51 @@
+This problem can be solved by finding the shortest path between the source and destination junctions while taking into account the cost of plugging open holes and installing new pipes between junctions. This requires a modified version of Dijkstra's algorithm, where the cost of visiting each junction is the cost of plugging any open holes and the cost of installing a new pipe to reach that junction.
+
+First, we begin by defining the necessary data structures and helper functions.
+
+```python
+import heapq
+
+def dist(j1, j2):
+    return ((j1[0] - j2[0])**2 + (j1[1] - j2[1])**2 + (j1[2] - j2[2])**2)**0.5
+
+N, M = map(int, input().split())
+junctions = [list(map(int, input().split())) for _ in range(N)]
+pipes = [list(map(int, input().split())) for _ in range(M)]
+
+G = [[] for _ in range(N+1)]
+for a, b in pipes:
+    G[a].append((b, dist(junctions[a-1], junctions[b-1])))
+    G[b].append((a, dist(junctions[a-1], junctions[b-1])))
+```
+
+The function `dist(j1, j2)` calculates the Euclidean distance between two junctions, and a graph `G` is created to represent the existing pipes and their associated costs.
+
+Next, we define and execute a modified Dijkstra's algorithm to find the shortest path from the source to the destination.
+
+```python
+def dijkstra(source, N):
+    dist = [float('inf')] * (N + 1)
+    dist[source] = 0
+    queue = [(0, source)]
+    while queue:
+        cost_to_u, u = heapq.heappop(queue)
+        for v, cost_uv in G[u]:
+            alt = cost_to_u + cost_uv + junctions[v-1][3] * 0.5
+            if alt < dist[v]:
+                dist[v] = alt
+                heapq.heappush(queue, (alt, v))
+    return dist
+
+distances = dijkstra(1, N)
+```
+
+Finally, if it is impossible to reach the destination, the word 'impossible' is printed; otherwise, the minimum cost is printed.
+
+```python
+if distances[N] == float('inf'):
+    print("impossible")
+else:
+    print(f"{distances[N]:.4f}")
+```
+
+This complete python program will solve the problem as described.

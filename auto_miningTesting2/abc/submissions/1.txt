@@ -1,0 +1,17 @@
+Here is a Python program that reads the input and solves the problem.
+
+```python
+def rearrange_numbers(numbers, order):
+    sorted_numbers = sorted(numbers)
+    mapping = {'A': sorted_numbers[0], 'B': sorted_numbers[1], 'C': sorted_numbers[2]}
+    return [str(mapping[i]) for i in order]
+
+def main():
+    numbers = list(map(int, input().split()))
+    order = input().strip()
+    print(" ".join(rearrange_numbers(numbers, order)))
+
+if __name__ == "__main__":
+    main()
+```
+This script works by first reading the input. The `numbers` are read as a list of integers, then they are sorted. The variable `order` is read as a string of characters. The function `rearrange_numbers()` creates a mapping from 'A', 'B', 'C' to the sorted numbers. Thus, 'A' corresponds to the smallest number, 'B' to next larger number and 'C' to the largest. Then it creates a new list by replacing each letter in `order` with its corresponding number from the mapping. Finally, the sorted numbers are printed to the screen in the desired order.

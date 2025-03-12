@@ -1,0 +1,80 @@
+```python
+def calculate_probability(num_buses, num_stations, deadline, bus_data):
+    """
+    Calculates the maximum probability of reaching the airport on time.
+
+    Args:
+        num_buses: The number of buses.
+        num_stations: The number of stations.
+        deadline: The time by which you must arrive at the airport.
+        bus_data: A list of tuples representing bus information. 
+                   Each tuple contains (start_station, destination_station, departure_time, arrival_time, probability).
+
+    Returns:
+        The maximum probability of reaching the airport on time.
+    """
+
+    # dp[i][j] represents the maximum probability of reaching station j at time i
+    dp = [[0.0 for _ in range(num_stations)] for _ in range(deadline + 1)]
+    dp[0][0] = 1.0  # Initial state: At time 0, probability at station 0 is 1
+
+    for time in range(deadline):
+        for current_station in range(num_stations):
+            if dp[time][current_station] > 0:
+                for bus_index in range(num_buses):
+                    start_station, dest_station, dep_time, arr_time, prob = bus_data[bus_index]
+                    
+                    # If the bus departs from the current station at the current time
+                    if start_station == current_station and dep_time == time:
+                        # Update the probability of reaching the destination station
+                        dp[arr_time][dest_station] = max(
+                            dp[arr_time][dest_station],
+                            dp[time][current_station] * prob
+                        )
+
+                # Consider staying at the current station for the next time unit
+                dp[time + 1][current_station] = max(
+                    dp[time + 1][current_station],
+                    dp[time][current_station]
+                )
+    
+    return dp[deadline][1]  # Probability of being at the airport (station 1) by the deadline
+
+
+if __name__ == "__main__":
+    num_buses, num_stations = map(int, input().split())
+    deadline = int(input())
+    buses = []
+
+    for _ in range(num_buses):
+        a, b, s, t, p = map(float, input().split())
+        buses.append((int(a), int(b), int(s), int(t), p))
+
+    probability = calculate_probability(num_buses, num_stations, deadline, buses)
+    print(f"{probability:.6f}")
+```
+
+**Explanation and Design Choices:**
+
+1. **Data Representation:**
+   - The bus schedule is stored in a list called `buses`. Each element in this list is a tuple containing the start station, destination station, departure time, arrival time, and the probability of the bus running.
+   - This structure allows for easy iteration and access to bus information.
+
+2. **Dynamic Programming Approach:**
+   - The core of the solution is a dynamic programming table `dp`. `dp[i][j]` represents the maximum probability of reaching station `j` at time `i`.
+   - The table is initialized with all values as 0, except `dp[0][0]` which is set to 1 (representing starting at station 0 at time 0 with a probability of 1).
+
+3. **Iteration and Logic:**
+   - The code iterates through each time unit and station.
+   - For each bus departing at the current time from the current station, it calculates the probability of reaching the destination station using that bus.
+   - It also considers the option of staying at the current station, inheriting the probability from the previous time unit.
+   - The `max` function ensures we always store the highest achievable probability at each `dp[i][j]`.
+
+4. **Final Result:**
+   - Finally, `dp[deadline][1]` holds the maximum probability of reaching the airport (station 1) at the deadline.
+
+5. **Variable and Function Names:**
+   - Descriptive names are used for variables and functions to enhance readability (e.g., `num_buses`, `calculate_probability`, `deadline`, etc.).
+
+6. **Comments:**
+   - Comments are added to explain the logic, data structures, and critical parts of the code.

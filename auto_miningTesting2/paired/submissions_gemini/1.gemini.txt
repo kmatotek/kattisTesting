@@ -1,0 +1,70 @@
+```python
+def get_longest_two_appearance_subarray_length(array_length, numbers):
+    """
+    Finds the length of the longest consecutive sub-array where each element appears exactly twice.
+
+    Args:
+        array_length: The length of the input array.
+        numbers: The input array of integers.
+
+    Returns:
+        The length of the longest valid sub-array.
+    """
+
+    max_length = 0
+    for start_index in range(array_length):
+        element_counts = {}
+        current_length = 0
+        for end_index in range(start_index, array_length):
+            current_element = numbers[end_index]
+            if current_element in element_counts:
+                element_counts[current_element] += 1
+            else:
+                element_counts[current_element] = 1
+
+            if element_counts[current_element] > 2:
+                break
+
+            current_length += 1
+            if all(count == 2 for count in element_counts.values()):
+                max_length = max(max_length, current_length)
+
+    return max_length
+
+
+if __name__ == "__main__":
+    input_length = int(input())
+    input_array = list(map(int, input().split()))
+    result = get_longest_two_appearance_subarray_length(input_length, input_array)
+    print(result)
+```
+
+**Explanation:**
+
+1. **`get_longest_two_appearance_subarray_length(array_length, numbers)` Function:**
+   - Takes the array length and the array as input.
+   - Initializes `max_length` to store the maximum length found.
+   - Uses a nested loop to iterate through all possible subarrays:
+     - The outer loop iterates through possible starting indices (`start_index`).
+     - The inner loop iterates through possible ending indices (`end_index`) starting from the `start_index`.
+   - For each subarray:
+     - `element_counts` dictionary keeps track of element frequencies within the current subarray.
+     - If an element's count exceeds 2, the subarray is no longer valid, so we `break` the inner loop.
+     - `current_length` is incremented for each valid element added to the subarray.
+     - If all elements in the current subarray have a count of exactly 2, we update `max_length`.
+   - Returns the `max_length` found.
+
+2. **Input and Function Call:**
+   - Reads the array length (`input_length`) from the input.
+   - Reads the array elements (`input_array`) from the input, converting them to integers.
+   - Calls the `get_longest_two_appearance_subarray_length` function with the input.
+
+3. **Output:**
+   - Prints the result returned by the function, which is the length of the longest valid subarray.
+
+**Key Points:**
+
+- The code avoids using external libraries as requested.
+- It uses descriptive variable names for clarity.
+- The algorithm efficiently checks subarrays using a sliding window-like approach with nested loops and a frequency counter (`element_counts`).
+- It handles cases where no valid subarray is found (`max_length` remains 0). 

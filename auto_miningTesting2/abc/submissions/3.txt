@@ -1,0 +1,22 @@
+Python Code:
+
+```python
+def reorder_numbers(numbers, order):
+    a, b, c = sorted(numbers)
+    ordered_numbers = [0]*3
+    for i in range(3):
+        if order[i] == 'A': 
+            ordered_numbers[i] = a
+        elif order[i] == 'B': 
+            ordered_numbers[i] = b
+        else: 
+            ordered_numbers[i] = c
+    return ordered_numbers
+
+numbers = list(map(int, input().split()))
+order = input()
+result = reorder_numbers(numbers, order)
+
+print(' '.join(map(str,result)))
+```
+In this program, first the three numbers are inputted and sorted. The sorted numbers are then assigned to the variables 'a', 'b' and 'c'. The desired order of the numbers is also inputted and these inputs are passed to the function called reorder_numbers(). In the function, an empty list of length three is initialized and then a for-loop is run for indices from 0 to 2. Depending upon the letter of the desired order at index 'i', the corresponding number 'a', 'b' or 'c' is assigned to the 'i'-th index location of the ordered_numbers list. This updated list gets returned as the output and it is then printed out in the same line, separated by a single space.

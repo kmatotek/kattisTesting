@@ -1,0 +1,15 @@
+Here is a Python solution using Lists:
+
+```python
+def rearrange_numbers(numbers, order):
+    sorted_numbers = sorted(numbers)
+    mapping = {'A': 0, 'B': 1, 'C': 2}
+    result = [sorted_numbers[mapping[char]] for char in order]
+    return result
+
+numbers = list(map(int,input().split()))
+order = input()
+print(' '.join(map(str, rearrange_numbers(numbers, order))))
+```
+
+In this python code, we first take three integer numbers as an input and store them in `numbers` list. Then an order of those numbers is taken as input. `rearrange_numbers` function is defined to rearrange the numbers. `sorted_numbers` list contains the numbers in ascending order. `mapping` dictionary is defined to map 'A', 'B' and 'C' to respective index in `sorted_numbers`. We use list comprehension and `mapping` to generate `result` list that is `numbers` rearranged in the desired order. It is printed on console using `join` and `map` functions.

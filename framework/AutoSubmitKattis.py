@@ -7,7 +7,7 @@ import subprocess
 ## Must have a .kattisrc configuration file in root directory ##
 
 
-model = "llama3"
+model = "qwen2.5-coder"
 
 # Prompting Ollama model
 def api_call(input_text):
@@ -21,23 +21,22 @@ def api_call(input_text):
 # Convert Ollama output to just Python code
 def get_python(message):
     start_code_block = message.find("```Python")
-    cut_string = message[start_code_block+10:]
     if start_code_block == -1:
-        start_code_block = message.find("```python") 
-        cut_string = message[start_code_block+10:]
+        start_code_block = message.find("```python")
     if start_code_block == -1:
-        start_code_block = message.find("```") 
-        cut_string = message[start_code_block+4:]
-    
+        start_code_block = message.find("```")
+        cut_string = message[start_code_block + 3:]
+    else:
+        cut_string = message[start_code_block + 10:]
     end_code_block = cut_string.find("```")
-    return cut_string[:end_code_block-1]
+    return cut_string[:end_code_block].strip()
 
 
 # Directories and files
-dir_path = "./auto_miningTesting"  # Root directory containing problem folders
+dir_path = "./auto_miningTesting2"  # Root directory containing problem folders
 file_name = "problem_text"  # File containing the problem description
 test_cases = "sample_input_and_ouput" # File in problem folder with test cases
-text_output_file = "output_text.txt"  # File name for the full Ollama response
+text_output_file = model + ".txt"  # File name for the full Ollama response
 
 
 for folder_name in os.listdir(dir_path):
@@ -48,11 +47,10 @@ for folder_name in os.listdir(dir_path):
 
     if not os.path.isdir(folder_path): continue # Only work on directories
 
-    if not folder_name == "twostones": continue # Only work on specific problem
+    #if not folder_name == "abc": continue # Only work on specific problem
 
-    output_file = folder_name + ".py"
     problem_id = folder_name
-    output_file = "1.py"
+    output_file = model + ".py"
     
 
     # Create a 'submissions' folder for generated solutions
@@ -99,7 +97,7 @@ for folder_name in os.listdir(dir_path):
     
     
     # Get generate solution file path, and the submit.py filepath
-    file_path = os.path.join(folder_path, "submissions", folder_name + ".py")
+    file_path = os.path.join(folder_path, "submissions", model + ".py")
     submit_script_path = os.path.join(os.getcwd(), "framework", "submit.py")
 
     # Use Kattis configuration file to submit with submit.py
@@ -110,10 +108,11 @@ for folder_name in os.listdir(dir_path):
     )
     
     # Print result from Kattis submission
-    print(result.stdout)  
+    print(result.stdout)
+    print(result.stderr)  
 
     # Write results to results folder
-    result_path = os.path.join(results_folder, folder_name + "_result.txt")
+    result_path = os.path.join(results_folder, model+ "_result.txt")
     with open(result_path, 'w') as stdout_file:
         stdout_file.write(result.stdout)  # Write stdout to a file
     

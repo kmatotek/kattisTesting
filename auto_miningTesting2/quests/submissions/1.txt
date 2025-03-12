@@ -1,0 +1,43 @@
+Here is a Python solution that uses a priority queue to refine the quests as you complete them and level up. We use a while-loop to go through all the quests initially. The idea is that, at each iteration, we try to complete the quests that we can complete at the current difficulty level. If there are too many to complete at once, we pick the one that would give us the least experience if we were to level up. Once we have no more quests to complete at our current level, we level up.
+
+Note this solution may run slowly for large inputs, because the complexity is O(n^2). In large-scale uses, it would be better to use a more efficient data structure, like a self-balancing binary search tree, instead of a list for "remaining".
+
+```python
+import heapq
+def xp_quests(n, v, c, quests):
+    # Initialize variables
+    xp = 0
+    level = 0
+    max_xp = 0
+    # Create a min heap of all quests, sorted by the target difficulty level
+    quests = sorted([(d,-x) for x, d in quests])
+    remaining = []
+    
+    # Repeat until we have finished all the quests
+    while quests or remaining:
+        # While we still have quests of the current difficulty level...
+        while quests and quests[0][0] <= level:
+            (d, minus_x) = heapq.heappop(quests)
+            # We push the experience points to the remaining array
+            heapq.heappush(remaining, minus_x)
+        
+        # If we have no quests to complete at the current level, we level up
+        if not remaining:
+            level = quests[0][0]
+        else:
+            # Otherwise, we complete a quest
+            minus_x = heapq.heappop(remaining)
+            xp -= minus_x
+            max_xp = max(max_xp, xp)
+            # And level up if possible
+            while remaining and xp >= (level+1) * v:
+                level += 1
+                minus_x = heapq.heappop(remaining)
+                xp -= minus_x
+                max_xp = max(max_xp, xp)
+                
+    return max_xp
+```
+Note: the Python's heapq library is used to implement a priority queue in Python. heapq.heappush() methods inserts an element to the heap without altering the current heap. heapq.heappop() method is used to remove and return the smallest element from the heap.
+
+Also, this solution assumes that the variable "quests" is a list of tuples, where each tuple is a pair (x, d). This program reads the quests in order of difficulty level from the heap. When a quest with a difficulty level that is too high is found, the program looks for quests that can still be completed at the current difficulty level stored in "remaining". The heap "remaining" stores, for each difficulty level, the quest with the smallest XP if you were to complete the quest at a higher level.

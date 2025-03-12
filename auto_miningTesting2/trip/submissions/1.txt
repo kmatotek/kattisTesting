@@ -1,0 +1,30 @@
+Here is a simple Python program using only Python's built-in features:
+
+```python
+def calculate_minimum_exchange():
+    while True:
+        n = int(input())
+        if n == 0:
+            break
+
+        expenses = []
+        for _ in range(n):
+            expenses.append(float(input()))
+
+        average = sum(expenses) / n
+        above_average = [x for x in expenses if x > average]
+        below_average = [x for x in expenses if x < average]
+
+        exchange = sum(above_average) - len(above_average) * average
+        exchange = round(exchange, 2)
+
+        print(f'${exchange:.2f}')
+
+calculate_minimum_exchange()
+```
+
+This program first reads the number of students. If it is 0, it breaks the loop and finishes. Otherwise, it reads the expenses of each student. The expenses that are above the average and below the average are separated and put into two different lists.
+
+The total amount of money that must change hands is the sum of the expenses above the average minus the number of expenses above the average times the average. The result needs to be rounded to 2 decimal points to represent cents.
+
+Finally, the total amount of money that must exchange hands is printed.

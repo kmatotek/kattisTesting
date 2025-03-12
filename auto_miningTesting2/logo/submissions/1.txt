@@ -1,0 +1,42 @@
+Here is the Python program that uses the Python's built-in math module to solve the problem:
+
+```python
+import math
+
+def calculate_distance(commands):
+    angle = 0.0
+    x_pos = 0.0
+    y_pos = 0.0
+    
+    for command in commands:
+        direction, value = command.split()
+        if direction == 'fd':
+            x_pos += int(value) * math.cos(math.radians(angle))
+            y_pos += int(value) * math.sin(math.radians(angle))
+        elif direction == 'bk':
+            x_pos -= int(value) * math.cos(math.radians(angle))
+            y_pos -= int(value) * math.sin(math.radians(angle))
+        elif direction == 'lt':
+            angle = ((angle + int(value)) + 360) % 360
+        elif direction == 'rt':
+            angle = ((angle - int(value)) + 360) % 360
+    
+    return round(math.hypot(x_pos, y_pos))
+
+def turtle_path():
+    test_cases = int(input())
+    
+    for _ in range(test_cases):
+        commands_num = int(input())
+        commands = []
+        
+        for _ in range(commands_num):
+            commands.append(input())
+        
+        print(calculate_distance(commands))
+
+
+turtle_path()
+```
+
+This program implements two functions: `calculate_distance()` that calculates and returns the straight-line distance from the turtle's initial position to the final one and `turtle_path()` that prompts the user for inputs and prints out the calculated distances for each test case. The turtle calculates the x and y positions using forward and backward movements with cos and sin trigonometric function which takes rotation angle into account. Also, it keeps track of the current rotation angle with the turning left and right commands.

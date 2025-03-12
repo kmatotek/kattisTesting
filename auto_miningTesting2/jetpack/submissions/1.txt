@@ -1,0 +1,37 @@
+Here is a Python program that solves the problem within the specified constraints. The concept behind the code is to read the characters of the field from bottom to top and make a move each time Barry reaches an obstacle. A stack is used to keep track of Barry's position and avoid double-counting the time spent on squares.
+
+```python
+def jetpack_joyride(n, field):
+    stack = [0]*(2*n)
+    top = 0
+    base = 4
+    for i in range(n):
+        while base < 9 and field[base+1][i] == '.':
+            base += 1
+        while field[base][i] == '.':
+            stack[top] = i
+            top += 1
+            base -= 1
+        while top > 0 and stack[top-1] == i:
+            top -= 1
+            base += 1
+    moves = []
+    for i in range(1, top):
+        if stack[i-1] != stack[i] - 1:
+            moves.append((stack[i-1] + 1, stack[i] - stack[i-1] - 1))
+    moves.append((stack[top-1] + 1, n - stack[top-1]))
+    return moves
+
+def main():
+    n = int(input().strip())
+    field = [list(input().strip()) for _ in range(10)]
+    moves = jetpack_joyride(n, field)
+    print(len(moves))
+    for t, x in moves:
+        print(t, x)
+
+if __name__ == "__main__":
+    main()
+```
+
+You can run this script in the Python environment, using input redirected from a file or entered manually from the keyboard. When supplying the input, please provide the size of the field first, then ten lines representing the field, with `.` and `X` denoting free squares and obstacles. The script will return the number of necessary moves, followed by pairs of integers representing the timing and duration of each move.

@@ -1,0 +1,30 @@
+Here is a Python program for your problem using Python's built-in libraries. 
+
+This program uses the concept of modular exponentiation to find the results. It calculates $8$ raised to the power $d$ in modular arithmetic of $1\, 000\, 000\, 007$ for each test case, to find the number of $d$ digit numbers that do not contain a nine.
+
+```python
+def noOfPosNumbers(T, d_cases):
+    MOD = 1000000007
+    output = []
+    
+    for i in range(T):
+        count = pow(8, d_cases[i], MOD)
+        output.append(count)
+
+    return output
+
+# Testing the function
+T = 2
+d_cases = [2, 3]
+print(noOfPosNumbers(T, d_cases))
+```
+
+In this program, the function `noOfPosNumbers` takes two arguments - an integer `T` for the number of test cases and a list `d_cases` for the values of $d$ in each test case.
+
+It uses a list `output` to store the results for each test case. In a loop, for each test case, it calculates $8$ raised to the power $d$, modulo $1\, 000\, 000\, 007$, and append the result to `output`.
+
+Finally, the function returns the `output` list containing the results for each test case in order.
+
+The time complexity for this program is $O(T\cdot log(d))$ as the `pow` function runs in logarithmic time complexity, and it is run `T` times in the loop.
+
+Please note that integers in Python 3 are of unlimited size. So, even though $d$ is up to $10^{18}$, which is a very large number, this Python program can handle it correctly.

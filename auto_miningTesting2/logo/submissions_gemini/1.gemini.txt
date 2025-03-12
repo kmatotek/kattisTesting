@@ -1,0 +1,82 @@
+```python
+import math
+
+def calculate_distance(commands_count, movements):
+    """Calculates the straight-line distance from the starting position to the final position of the turtle.
+
+    Args:
+        commands_count: The number of commands.
+        movements: A list of commands for the turtle.
+
+    Returns:
+        The distance from the starting position to the final position, rounded to the nearest integer.
+    """
+    x_pos, y_pos = 0, 0
+    direction = 0  # Facing east
+
+    for _ in range(commands_count):
+        command = movements.pop(0).split()
+        action = command[0]
+        value = int(command[1]) if len(command) > 1 else 0
+
+        if action == 'fd':
+            x_pos += value * math.cos(math.radians(direction))
+            y_pos += value * math.sin(math.radians(direction))
+        elif action == 'bk':
+            x_pos -= value * math.cos(math.radians(direction))
+            y_pos -= value * math.sin(math.radians(direction))
+        elif action == 'rt':
+            direction = (direction + value) % 360
+        elif action == 'lt':
+            direction = (direction - value) % 360
+
+    distance = round(math.sqrt(x_pos**2 + y_pos**2))
+    return distance
+
+def main():
+    """Processes test cases for turtle movements."""
+    test_cases = int(input())
+
+    for _ in range(test_cases):
+        commands_count = int(input())
+        movements = [input() for _ in range(commands_count)]
+        distance = calculate_distance(commands_count, movements)
+        print(distance)
+
+if __name__ == "__main__":
+    main()
+```
+
+**Explanation:**
+
+1. **`calculate_distance(commands_count, movements)` Function:**
+   - Takes the number of commands and a list of commands as input.
+   - Initializes variables:
+     - `x_pos`, `y_pos`: Starting position at (0, 0).
+     - `direction`: Initial direction (0 degrees - facing east).
+   - Iterates through the commands:
+     - Parses the command and its value.
+     - Updates `x_pos`, `y_pos`, and `direction` based on the command (fd, bk, rt, lt).
+   - Calculates the Euclidean distance between the starting (0, 0) and final (x_pos, y_pos) points.
+   - Returns the distance rounded to the nearest integer.
+
+2. **`main()` Function:**
+   - Reads the number of test cases.
+   - For each test case:
+     - Reads the number of commands.
+     - Reads the commands and stores them in the `movements` list.
+     - Calls `calculate_distance()` to get the distance.
+     - Prints the calculated distance for each test case.
+
+**How it works:**
+
+- The code simulates the turtle's movement in a 2D plane.
+- `fd` and `bk` commands update the `x_pos` and `y_pos` based on the current `direction` (angle).
+- `rt` and `lt` commands update the `direction` of the turtle.
+- The final distance is calculated using the Pythagorean theorem to find the hypotenuse of the triangle formed by the turtle's movement.
+
+**To run the program:**
+
+1. Save the code as a Python file (e.g., `turtle_distance.py`).
+2. Run the file from your terminal using: `python turtle_distance.py`
+3. The program will prompt you to enter the input as described in the problem statement. 

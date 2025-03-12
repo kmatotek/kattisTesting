@@ -1,0 +1,10 @@
+Here is a Python program for the given problem.
+
+```python
+n = int(input())
+b = list(map(int, input().split()))
+official_ab = len([x for x in b if x != -1])
+total_bases = sum([x for x in b if x != -1])
+print(total_bases / official_ab)
+```
+In this solution, we first read the number of at-bats from the user. Then, we read the outcomes of the at-bats and store them in a list. We count the total number of official at-bats (i.e., at-bats that are not walks) by filtering out the walks from the list and taking its length. We compute the total number of bases by summing up the official at-bats. Finally, we calculate and print the slugging percentage.

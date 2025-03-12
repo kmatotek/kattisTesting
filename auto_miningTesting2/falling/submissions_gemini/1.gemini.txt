@@ -1,0 +1,45 @@
+```python
+def find_frames(mug_height):
+  """
+  Finds two frames in the video between which the mug has fallen a distance equal to mug_height.
+
+  Args:
+    mug_height: The height of the mug in millimeters.
+
+  Returns:
+    A tuple containing the two frame numbers (n1, n2) if they exist, otherwise the string "impossible".
+  """
+
+  for frame1 in range(int(mug_height**0.5) + 1):
+    for frame2 in range(frame1 + 1, int(mug_height**0.5) + 2):
+      distance_fallen = frame2**2 - frame1**2
+      if distance_fallen == mug_height:
+        return frame1, frame2
+  return "impossible"
+
+if __name__ == "__main__":
+  distance_to_measure = int(input())
+  frame1, frame2 = find_frames(distance_to_measure)
+  print(f"{frame1} {frame2}" if frame2 != "impossible" else "impossible")
+```
+
+**Explanation:**
+
+1. **`find_frames(mug_height)` function:**
+   - Takes `mug_height` as input, representing the distance Susan wants to measure.
+   - Iterates through possible frame numbers (`frame1` and `frame2`) using nested loops, starting from 0.
+   - Calculates the `distance_fallen` using the formula `frame2**2 - frame1**2`.
+   - If `distance_fallen` equals `mug_height`, it means the mug fell that distance between those frames, so it returns the frame numbers (`frame1`, `frame2`).
+   - If no suitable frame pair is found, it returns "impossible".
+
+2. **Main Execution Block (`if __name__ == "__main__":`)**
+   - Reads the `distance_to_measure` (integer) from the user's input.
+   - Calls the `find_frames` function to get the frame numbers.
+   - Prints the frame numbers separated by a space if they exist (`frame2 != "impossible"`), otherwise prints "impossible".
+
+**How the Code Addresses the Requirements:**
+
+- **Variable and Function Names:** Uses descriptive names like `find_frames`, `mug_height`, `distance_fallen`, etc.
+- **Internal Python Libraries:** Only uses built-in Python features and doesn't import any external libraries.
+- **Solves the Problem:** The code directly implements the logic of finding frame pairs where the difference of squares of frame numbers equals the given distance.
+- **Handles "Impossible" Cases:** It correctly returns "impossible" when no valid frame pair exists.

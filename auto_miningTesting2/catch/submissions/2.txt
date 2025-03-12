@@ -1,0 +1,56 @@
+Here is a Python solution for the problem. This solution represents the bus information as a graph and uses Dijkstra's algorithm to find the maximum probability path from station 0 to station 1, within the given time limit.
+
+```python
+import heapq
+
+def ride_to_icpc_finals(m, n, k, bus_info):
+    edges = [[] for _ in range(n)]
+
+    for a, b, s, t, p in bus_info:
+        edges[a].append((b, s, t, p))
+
+    for edge in edges:
+        edge.sort(reverse = True)
+
+    best_prob = [0] * n
+    best_prob[0] = 1.0
+    pq = [(-1.0, 0, k)]
+
+    while pq:
+        curr_prob, curr_node, curr_time = heapq.heappop(pq)
+        curr_prob = -curr_prob
+
+        if curr_prob < best_prob[curr_node]: continue
+
+        for next_node, start_time, end_time, prob in edges[curr_node]:
+            if start_time >= curr_time: continue
+
+            next_prob = curr_prob * prob
+
+            if next_prob > best_prob[next_node]:
+                best_prob[next_node] = next_prob
+                heapq.heappush(pq, (-next_prob, next_node, start_time))
+
+    return best_prob[1]
+
+
+# read input
+m, n = map(int, input().split())
+k = int(input())
+
+bus_info = []
+
+for _ in range(m):
+    a, b, s, t, p = map(float, input().split())
+    a, b, s, t = int(a), int(b), int(s), int(t)
+    bus_info.append((a, b, s, t, p))
+
+# compute and print result
+result = ride_to_icpc_finals(m, n, k, bus_info)
+print('{:.9f}'.format(result))
+```
+This program first organizes the bus information into a sorted list of edges for each station in the city, where each edge has information about its destination station, start and end times, and the probability of the bus running as planned. In addition, a priority queue is used to perform a modified version of Dijkstra's algorithm, where the maximum probability path is selected instead of the shortest path.
+
+When a node (station) is extracted from the priority queue, the program checks whether the probability of reaching it is higher than any previously recorded probability. If not, it discards the node; otherwise, it updates the best probability for the node and adds all its outgoing edges to the priority queue. This process is repeated until the queue is empty.
+
+The final result is the maximum probability of reaching the airport (station 1) within the given time limit.

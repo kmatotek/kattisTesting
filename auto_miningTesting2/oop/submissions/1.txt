@@ -1,0 +1,64 @@
+Below is a Python solution using a Trie data structure. In this solution, each word is stored in the Trie data structure in both forward and reversed form. Queries can then be processed efficiently by traversing the Trie from root until the "*" character is encountered in the query pattern. The number of words the pattern covers is the number of times the function 'findAll' is called recursively on the node that corresponds to the last character before the "*".
+
+The TrieNode class contains a dict() linking each next possible character to the respective TrieNode and a count to keep track of the number of full words that end at this current TrieNode.
+
+A Trie object is composed of a root TrieNode.
+
+```python
+class TrieNode:
+    def __init__(self):
+        self.child = dict()
+        self.count = 0
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.child:
+                node.child[char] = TrieNode()
+            node = node.child[char]
+        node.count += 1
+
+    def query(self, pattern):
+        node = self.root
+        for char in pattern:
+            if char == '*':
+                break
+            if char in node.child:
+                node = node.child[char]
+            else:
+                return 0
+        return self.findAll(node)
+    
+    def findAll(self, node):
+        count = node.count
+        for char in node.child:
+            count += self.findAll(node.child[char])
+        return count
+
+
+def solve():
+    N, Q = map(int,input().split())
+    forward_trie = Trie()
+    reverse_trie = Trie()
+    for _ in range(N):
+        word = input().strip()
+        forward_trie.insert(word)
+        reverse_trie.insert(word[::-1])
+    for _ in range(Q):
+        pattern = input().strip()
+        if pattern[0] == '*':
+            print(reverse_trie.query(pattern[::-1]))
+        else:
+            print(forward_trie.query(pattern))
+
+solve()
+```
+
+Please note:
+- A Trie (also known as a Prefix Tree) is a special kind of tree data structure used to store a collection of strings for efficient retrieval.
+- '*' symbol in your pattern query should not be at the middle of the string. As long as '*' is at beginning or at the end of the string, this code works perfectly fine.
+-Since Python doesn't have a built-in Trie data structure, we create it.

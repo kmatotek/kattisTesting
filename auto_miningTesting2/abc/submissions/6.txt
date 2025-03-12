@@ -1,0 +1,36 @@
+Here is a simple python program to solve this problem:
+
+```python
+def rearrange_nums(order, nums):
+    nums.sort()
+    result = []
+    for x in order:
+        if x == 'A':
+            result.append(nums[0])
+        elif x == 'B':
+            result.append(nums[1])
+        else:
+            result.append(nums[2])
+    return result
+
+
+nums = list(map(int, input().strip().split()))
+order = input().strip()
+result = rearrange_nums(order, nums)
+print(' '.join(map(str, result)))
+```
+
+In this python program, `rearrange_nums()` function is used to generate the rearranged numbers according to the desired order. Then it prompts the user to enter three numbers and their order respectively. Finally, it prints out the rearranged numbers in the given order.
+
+For example, if you input is:
+
+```
+10 20 30
+CBA
+```
+
+the output will be:
+
+```
+30 20 10
+```

@@ -1,0 +1,33 @@
+Here is a Python program that solves the problem:
+
+```python
+def decompose(word, syllables, memo):
+    if word in memo: 
+        return memo[word]
+    if word in syllables:
+        memo[word] = [len(word)]
+    else:
+        memo[word] = []
+        for i in range(1, len(word)):
+            left = word[:i]
+            right = word[i:]
+            if right in syllables:
+                left_decomp = decompose(left, syllables, memo)
+                for ld in left_decomp:
+                    memo[word].append(ld + len(right))
+    return memo[word]
+
+def check_haiku(syllables, poem):
+    memo = {}
+    for line in poem:
+        syllables_in_line = sum(len(decompose(word, syllables, memo)) for word in line.split())
+        if syllables_in_line != 5 and syllables_in_line != 7:
+            return 'come back next year'
+    return 'haiku'
+
+S = int(input())
+syllables = set(input().split())
+poem = [input() for _ in range(3)]
+print(check_haiku(syllables, poem))
+```
+This program uses dynamic programming to break up a word into syllables. The function `decompose()` returns all possible lengths of syllables in a word. Using memoization, we avoid repetitive computation of the same substrings. The `check_haiku()` evaluates each line of the poem, and if the syllables in a line do not match the required 5 or 7 syllables, it returns "come back next year". If all lines pass this check, it returns "haiku".

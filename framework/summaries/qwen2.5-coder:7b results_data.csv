@@ -1,6 +1,0 @@
-problem,difficulty,attempt 1 status,attempt 1 passed,attempt 1 total,attempt 2 status,attempt 2 passed,attempt 2 total,attempt 3 status,attempt 3 passed,attempt 3 total,passed w prompting,best attempt
-twostones,1.2,Accepted (0.04 s),200,200,,,,,,,False,1
-cinema,2.1,Accepted (0.04 s),7,7,,,,,,,False,1
-1dfroggereasy,3.3,Run Time Error (0.06 s),5,38,Run Time Error (0.05 s),13,38,Run Time Error (0.05 s),13,38,False,2
-99problems,2.8,Wrong Answer (0.04 s),0,19,Wrong Answer (0.04 s),0,19,Wrong Answer (0.04 s),0,19,False,1
-hello,,Accepted (0.04 s),1,1,,,,,,,False,1

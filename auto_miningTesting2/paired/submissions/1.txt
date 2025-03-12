@@ -1,0 +1,20 @@
+Here is a Python solution which uses a dictionary to keep track of the last index of every element using a hash table:
+
+```python
+def find_longest_subarray(n, arr):
+    longest_subarray_len = 0
+    subarray_start = 0
+    last_index = dict()
+    for current_index in range(n):
+        if arr[current_index] in last_index:
+            subarray_start = max(subarray_start, last_index[arr[current_index]] + 1)
+        longest_subarray_len = max(longest_subarray_len, current_index - subarray_start + 1)
+        last_index[arr[current_index]] = current_index
+    return longest_subarray_len
+
+n = int(input().strip())
+arr = list(map(int, input().split()))
+
+print(find_longest_subarray(n, arr))
+```
+The solution works by iterating through the array from left to right, whenever an element which has been seen before is encountered, we check if its last index is more than the current start of the subarray. If it is, we update the start to be one position after the last occurrence of this element. Finally, we keep track of the maximum length of subarray seen.

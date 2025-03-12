@@ -1,0 +1,94 @@
+```python
+def calculate_final_score(num_cells, cell_values, score_values):
+    """
+    Calculates the final score of the game for each starting cell, assuming optimal play.
+
+    Args:
+        num_cells: The number of cells in the row.
+        cell_values: A list of integers representing the values written on the cells.
+        score_values: A list of integers representing the score associated with each cell.
+
+    Returns:
+        A list of integers, where the i-th integer represents the final score of the game
+        if the token starts on the i-th cell.
+    """
+
+    final_scores = [-1] * (num_cells + 1)  # Initialize with -1 to track computed scores
+    
+    def get_optimal_score(current_cell):
+        """
+        Recursively calculates the optimal score from a given cell.
+
+        Args:
+            current_cell: The index of the current cell.
+
+        Returns:
+            The optimal score achievable from the current cell.
+        """
+        
+        if current_cell > num_cells:
+            return 0
+        if final_scores[current_cell] != -1:
+            return final_scores[current_cell]
+
+        max_score = float('-inf')  # Initialize with negative infinity for maximization
+        for jump in range(1, num_cells + 1):
+            next_cell = current_cell + jump * cell_values[current_cell - 1]
+            if next_cell <= num_cells:
+                opponent_score = get_optimal_score(next_cell)
+                max_score = max(max_score, score_values[current_cell - 1] + opponent_score)
+        
+        final_scores[current_cell] = max_score
+        return max_score
+
+    for start_cell in range(1, num_cells + 1):
+        final_scores[start_cell] = get_optimal_score(start_cell)
+
+    return final_scores[1:]  # Return scores for starting cells 1 to n
+
+
+# Read and process test cases
+num_test_cases = int(input())
+for _ in range(num_test_cases):
+    num_cells = int(input())
+    cell_values = list(map(int, input().split()))
+    score_values = list(map(int, input().split()))
+    
+    # Calculate and print the results
+    results = calculate_final_score(num_cells, cell_values, score_values)
+    print(*results)
+```
+
+**Explanation:**
+
+1. **`calculate_final_score(num_cells, cell_values, score_values)` Function:**
+   - Takes the number of cells, cell values, and score values as input.
+   - Initializes `final_scores` list with -1, which serves as a flag to check if the optimal score from a particular cell has already been calculated or not.
+   - Calls the `get_optimal_score` function to calculate the optimal score for each starting cell.
+   - Returns the calculated `final_scores` for starting cells 1 to `n`.
+
+2. **`get_optimal_score(current_cell)` Function:**
+   - This is a recursive function to determine the optimal score from a given cell (`current_cell`).
+   - **Base Cases:**
+     - If `current_cell` is beyond the last cell (`current_cell > num_cells`), return 0 (game ends).
+     - If the optimal score for the `current_cell` is already calculated (`final_scores[current_cell] != -1`), return the stored value.
+   - **Recursive Step:**
+     - Iterate through possible jumps (`jump`) based on the current cell's value (`cell_values[current_cell - 1]`).
+     - Calculate the `next_cell` based on the jump.
+     - If `next_cell` is valid (within the board), recursively calculate the `opponent_score` using `get_optimal_score`.
+     - Update `max_score` to maximize the player's score.
+   - Store the calculated `max_score` in `final_scores` for later use.
+   - Return the calculated `max_score`.
+
+3. **Main Loop:**
+   - Reads the number of test cases.
+   - For each test case, it reads the input (number of cells, cell values, and score values).
+   - Calls the `calculate_final_score` function to get the final scores for all starting positions.
+   - Prints the space-separated results for each test case.
+
+**Key Points:**
+
+- **Optimal Play (Minimax Strategy):** The code implements a recursive approach to simulate optimal play by both players. The `get_optimal_score` function implicitly uses a minimax strategy, where the current player aims to maximize their score assuming the opponent will play optimally to minimize it. 
+- **Memoization (Dynamic Programming):** The `final_scores` list is used to store already computed results (`memoization`). This prevents redundant calculations for the same cell and significantly improves efficiency. 
+
+This solution provides an efficient way to solve SoCCat's game by leveraging recursion and memoization. 

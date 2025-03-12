@@ -1,0 +1,26 @@
+Here is a Python solution using only internal Python libraries. The solution involves sorting the delivery addresses by their distance from the post office and then delivering letters to the farthest addresses first until the truck is empty. The truck then returns to the post office to refill and continues delivering letters in the same manner until all letters have been delivered.
+
+```python
+def min_distance(N, K, deliveries):
+    pos_deliveries = sorted([x for x in deliveries if x[0]>0], key=lambda x: x[0])
+    neg_deliveries = sorted([x for x in deliveries if x[0]<0], key=lambda x: -x[0])
+    total_distance = 0
+    while pos_deliveries or neg_deliveries:
+        total_distance += deliver(K, pos_deliveries)
+        total_distance += deliver(K, neg_deliveries)
+    return total_distance*2
+
+def deliver(K, deliveries):
+    letters_delivered = 0
+    max_distance = 0
+    while deliveries and letters_delivered + deliveries[-1][1] <= K:
+        x, t = deliveries.pop()
+        letters_delivered += t
+        max_distance = abs(x)
+    return max_distance
+
+N, K = map(int,input().split())
+deliveries = [list(map(int, input().split())) for _ in range(N)]
+print(min_distance(N, K, deliveries))
+```
+In the above python program, first the inputs are taken. It is assumed that they are given in the format specified in the problem. Then the deliveries are sorted into cadences of positive and negative as the vehicle would first go to one direction, deliver as much as it can, then would come back and go to the other direction. This would continue until no more deliveries are left. Thus, only internal Python libraries are used in this program.

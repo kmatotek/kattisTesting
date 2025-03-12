@@ -1,0 +1,40 @@
+Here is the python code for the above problem:
+
+```python
+def soccat_game():
+    data_sets = int(input())
+    results = []
+    for _ in range(data_sets):
+        number_cells = int(input())
+        cells = list(map(int, input().split()))
+        scores = list(map(int, input().split()))
+        result_set = []
+        dp = [0] * number_cells
+        intervals = [[] for _ in range(number_cells)]
+        for i in range(number_cells-1, -1, -1):
+            p = cells[i]
+            j = i + p
+            while j < number_cells:
+                if len(intervals[j]) == 0 or intervals[j][0][0] != j + intervals[j][0][1] * p:
+                    dp[i] = max(dp[i], intervals[j][0][0] - j * p + dp[j] if len(intervals[j]) > 0 else 0)
+                    break
+                dp[i] = max(dp[i], intervals[j][0][2] + dp[intervals[j][0][3]] if len(intervals[j]) > 0 else 0)
+                j += intervals[j][0][1] * p
+            dp[i] += scores[i]
+            while len(intervals[i]) > 0 and intervals[i][-1][2] < dp[i]:
+                intervals[i].pop()
+            intervals[i].append((i+j, (j-i)//p, dp[i], j))
+        results.append(dp)
+    for result in results:
+        print(' '.join(str(x) for x in result))
+
+soccat_game()
+```
+
+This code starts by getting its `data_sets` number from user. For each data set, it sets up `number_cells`, `cells` and `scores` by parsing through user input. The `cells` and `scores` vary in length and values based on user. 
+
+In the main for loop it sorts through each cell, starting from biggest to smallest, it updates the respective nodes values in dp and checks conditions to decide if a score should be updated. It ends by appending to intervals array the tuple of score, cell and dp value pairs. 
+
+Finally it prints the results in a single line separated by a space. 
+
+Before you add more strategies make sure that your programming logic for the game is reliable. Each step can change the results dramatically. Algorithms can be quite tricky and they're all about choosing the most efficient strategy, which can vary depending on number of cells, scores and SoCCat's strategy. Thus, running tests and adjusting accordingly is a constant part of the process.

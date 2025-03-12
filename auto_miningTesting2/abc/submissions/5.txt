@@ -1,0 +1,25 @@
+Here is a Python program that can solve this problem:
+
+```python
+def rearrange(a, b, c, order):
+    arr = [a, b, c]
+    arr.sort()
+
+    result = []
+    for ch in order:
+        if ch == 'A':
+            result.append(str(arr[0]))
+        elif ch == 'B':
+            result.append(str(arr[1]))
+        else: 
+            result.append(str(arr[2]))
+
+    return ' '.join(result)
+
+a, b, c = map(int, input().strip().split())
+order = input().strip()
+print(rearrange(a, b, c, order))
+```
+This function works by creating a list (`arr`) from the input integers and sorting it. Then, it goes through the desired order and appends the corresponding integer (which is converted to a string) from the sorted list to the `result` list. Finally, it joins all elements in the `result` list with a space and returns the resulting string.
+
+After defining the function, it takes three integers and the desired order as input, and then it calls the function with these inputs and prints the result.

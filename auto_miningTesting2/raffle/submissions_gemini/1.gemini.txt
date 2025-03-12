@@ -1,0 +1,55 @@
+```python
+from fractions import Fraction
+
+def calculate_win_probability(total_names_excluding_yours, num_prizes):
+  """Calculates the maximum probability of winning a prize in a raffle.
+
+  Args:
+    total_names_excluding_yours: The number of names in the raffle box excluding yours.
+    num_prizes: The number of prizes to be given away.
+
+  Returns:
+    The maximum probability of winning a prize as a float.
+  """
+
+  max_probability = 0
+  for num_entries in range(1, num_prizes + 1):
+    probability_numerator = 0
+    for prizes_won in range(1, num_entries + 1):
+      # Calculate the probability of winning exactly 'prizes_won' prizes
+      probability_numerator += (
+          Fraction(total_names_excluding_yours, total_names_excluding_yours + num_entries - prizes_won) *
+          Fraction(num_entries - prizes_won + 1, num_prizes - prizes_won + 1)
+      )
+
+    probability = float(probability_numerator)
+    max_probability = max(max_probability, probability)
+
+  return max_probability
+
+
+if __name__ == "__main__":
+  input_line = input().split()
+  total_names_excluding_yours = int(input_line[0])
+  num_prizes = int(input_line[1])
+
+  max_win_probability = calculate_win_probability(total_names_excluding_yours, num_prizes)
+  print(f"{max_win_probability:.6f}")
+```
+
+**Explanation:**
+
+1. **Input:** The code takes two integers as input, `total_names_excluding_yours` (n) and `num_prizes` (p).
+2. **calculate_win_probability Function:**
+   - It iterates through possible numbers of your entries in the raffle box, from 1 to `num_prizes` (as entering more times than the number of prizes doesn't increase your chances further).
+   - For each number of entries, it calculates the probability of winning at least one prize. It does this by summing the probabilities of winning 1, 2, ..., up to the number of entries you have.
+   - The probability of winning exactly `prizes_won` prizes is calculated using combinations (which is why we use the `Fraction` class to avoid floating-point precision errors).
+   - The `max_probability` is updated to store the highest probability found.
+3. **Output:** The calculated maximum probability of winning is printed with 6 decimal places.
+
+**Key Points:**
+
+- **No external libraries** are used (only `fractions` which is part of Python's standard library).
+- **Descriptive variable names** are used for clarity.
+- **Comments** are added to explain the logic.
+- The code **calculates the exact probability** using fractions to avoid floating-point precision issues, ensuring accurate results. 
