@@ -1,0 +1,28 @@
+Submission received. Submission ID: 16861487.
+Submission URL: https://open.kattis.com/submissions/16861487
+https://open.kattis.com/submissions/16861487
+
+
+New...
+New...
+New...
+New...
+New...
+New...
+New...
+New...
+Test cases: 
+Test cases: [?                   ]  1 / 20
+Test cases: 
+Test cases: [....?               ]  5 / 20
+Test cases: 
+Test cases: [.......?            ]  8 / 20
+Test cases: 
+Test cases: [...........?        ]  12 / 20
+Test cases: 
+Test cases: [..............?     ]  15 / 20
+Test cases: 
+Test cases: [..................? ]  19 / 20
+Test cases: 
+Test cases: [....................]  20 / 20
+[32mAccepted (0.04 s)[0m

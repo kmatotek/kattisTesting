@@ -1,0 +1,96 @@
+To solve this problem, we can simulate the turtle's movements and calculate its final position relative to its starting point. Instead of using a real turtle graphics library, we can use basic Python math to compute the coordinates.
+
+Here is the Python program:
+
+```python
+import math
+
+def process_commands(commands):
+    x, y = 0, 0
+    angle = 0  # angle in degrees
+
+    for command in commands:
+        parts = command.split()
+        cmd = parts[0]
+        value = int(parts[1])
+
+        if cmd == 'fd':
+            dx = value * math.cos(math.radians(angle))
+            dy = value * math.sin(math.radians(angle))
+            x += dx
+            y += dy
+        elif cmd == 'lt':
+            angle += value
+        elif cmd == 'bk':
+            dx = -value * math.cos(math.radians(angle))
+            dy = -value * math.sin(math.radians(angle))
+            x += dx
+            y += dy
+        elif cmd == 'rt':
+            angle -= value
+
+    return round(math.sqrt(x**2 + y**2))
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().splitlines()
+
+    test_cases = int(data[0])
+    results = []
+
+    index = 1
+    for _ in range(test_cases):
+        num_commands = int(data[index])
+        commands = data[index + 1:index + num_commands + 1]
+        index += num_commands + 1
+
+        distance = process_commands(commands)
+        results.append(distance)
+
+    for result in results:
+        print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Explanation:
+
+1. **Initialization**:
+   - The turtle starts at the origin `(0, 0)` with an initial angle of `0` degrees.
+
+2. **Processing Commands**:
+   - We loop through each command and update the turtle's position accordingly.
+   - For `fd` (forward), we calculate the change in x and y coordinates using trigonometric functions (`cos` and `sin`) based on the current angle.
+   - For `lt` (left turn), we simply add the degrees to the current angle.
+   - For `bk` (backward), we move the turtle in the opposite direction by negating the distance and angle.
+   - For `rt` (right turn), we subtract the degrees from the current angle.
+
+3. **Distance Calculation**:
+   - After processing all commands, we calculate the straight-line distance from the origin to the final position using the Euclidean distance formula (`sqrt(x^2 + y^2)`).
+
+4. **Main Function**:
+   - We read input data and split it into lines.
+   - For each test case, we parse the number of commands and then process each command to compute the final coordinates.
+   - Finally, we print the distance for each test case.
+
+### Sample Input/Output:
+
+- **Input**:
+  ```
+  1
+  5
+  fd 100
+  lt 120
+  fd 100
+  lt 120
+  fd 100
+  ```
+
+- **Output**:
+  ```
+  0
+  ```
+
+This program will correctly compute the straight-line distance from the starting point to the final position for any given sequence of Logo commands.

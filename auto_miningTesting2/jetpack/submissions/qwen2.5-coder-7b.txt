@@ -1,0 +1,65 @@
+To solve this problem, we need to simulate Barry's movements on the field. We'll keep track of his position and whether he has the jetpack enabled or not. When we encounter an obstacle, we'll enable the jetpack and calculate the time it takes for him to ascend and descend. The solution involves finding a series of moves that allow Barry to navigate through all columns without hitting any obstacles.
+
+Here's the Python code to achieve this:
+
+```python
+def solve_game(N, field):
+    # Initialize variables
+    moves = []
+    t = 0
+    x = 0
+    jetpack_on = False
+    
+    # Starting position at the lower left corner of the center square
+    row = 9
+    col = 0
+    
+    while col < N:
+        if jetpack_on:
+            # Ascend diagonally up until reaching the ceiling or an obstacle
+            while row > 0 and field[row-1][col] == '.':
+                row -= 1
+                t += 1
+            
+            # If we hit an obstacle, start falling down
+            jetpack_on = False
+        
+        if not jetpack_on and field[row][col+1] == 'X':
+            # Enable jetpack when about to hit an obstacle
+            moves.append((t, x + 1))
+            jetpack_on = True
+            t += 1
+            x = 0
+        
+        # Move to the right by one square per second
+        col += 1
+        t += 1
+        x += 1
+    
+    return len(moves), moves
+
+# Read input
+N = int(input())
+field = [input().strip() for _ in range(10)]
+
+# Solve the game
+P, moves = solve_game(N, field)
+
+# Output the result
+print(P)
+for move in moves:
+    print(*move)
+```
+
+### Explanation:
+1. **Initialization**: We start by initializing variables to keep track of time (`t`), jetpack duration (`x`), and whether the jetpack is on (`jetpack_on`). We also initialize Barry's starting position at the lower left corner.
+
+2. **Game Loop**:
+   - If the jetpack is on, we move Barry diagonally up until he hits an obstacle or reaches the ceiling.
+   - If the jetpack is off and the next square to the right has an obstacle ('X'), we enable the jetpack by adding a move to the list of moves.
+
+3. **Move Barry**: Regardless of whether the jetpack is on or off, we always move Barry one square to the right each second.
+
+4. **Output**: After processing all columns, we output the number of moves and the list of moves.
+
+This code ensures that Barry navigates through all columns while avoiding obstacles using his jetpack effectively. The constraints are handled efficiently with internal Python libraries, ensuring optimal performance for large input sizes up to \(10^5\).

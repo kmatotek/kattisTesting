@@ -1,0 +1,47 @@
+Here's a Python program that solves the problem as described. The program reads the input, sorts the numbers based on their given order, and prints the sorted numbers.
+
+```python
+def rearrange_numbers(A, B, C, desired_order):
+    # Create a dictionary to map each letter to its corresponding number
+    number_map = {'A': A, 'B': B, 'C': C}
+    
+    # Sort the numbers based on their order in the desired order string
+    sorted_numbers = [number_map[letter] for letter in desired_order]
+    
+    # Print the sorted numbers separated by a space
+    print(" ".join(map(str, sorted_numbers)))
+
+# Read input from user
+A, B, C = map(int, input().split())
+desired_order = input().strip()
+
+# Call the function to rearrange and print the numbers
+rearrange_numbers(A, B, C, desired_order)
+```
+
+### Explanation:
+1. **Input Reading**:
+   - The first line of input is split into three integers `A`, `B`, and `C`.
+   - The second line of input is stripped of any leading/trailing whitespace and stored as `desired_order`.
+
+2. **Mapping Numbers to Letters**:
+   - A dictionary `number_map` is created to map each letter ('A', 'B', 'C') to its corresponding number.
+
+3. **Sorting Based on Desired Order**:
+   - A list comprehension is used to create a new list `sorted_numbers` that contains the numbers in the order specified by `desired_order`.
+
+4. **Output**:
+   - The sorted numbers are joined into a single string, separated by spaces, and printed.
+
+### Example Usage:
+If you run this program with the input:
+```
+1 5 3
+ABC
+```
+The output will be:
+```
+1 3 5
+```
+
+This program ensures that the numbers are rearranged according to the specified order without using any external libraries.

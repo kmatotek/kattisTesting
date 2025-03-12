@@ -1,0 +1,71 @@
+To solve this problem, we need to determine how many words in a given set cover each pattern. A pattern covers a word if replacing the wildcard character `*` in the pattern with any substring (including an empty string) makes the word and the pattern identical.
+
+Here's a Python program that solves the problem:
+
+```python
+def count_covered_words(words, patterns):
+    result = []
+    
+    for pattern in patterns:
+        count = 0
+        
+        # Check each word to see if it covers the pattern
+        for word in words:
+            len_word = len(word)
+            len_pattern = len(pattern)
+            
+            # Iterate through all possible positions of the wildcard '*'
+            for i in range(len_word - len_pattern + 1):
+                match = True
+                for j in range(len_pattern):
+                    if pattern[j] != '*' and (i + j >= len_word or word[i + j] != pattern[j]):
+                        match = False
+                        break
+                if match:
+                    count += 1
+                    break
+        
+        result.append(count)
+    
+    return result
+
+# Read input from stdin
+import sys
+input = sys.stdin.read
+data = input().split()
+
+N = int(data[0])
+Q = int(data[1])
+
+words = data[2:N + 2]
+patterns = data[N + 2:]
+
+# Compute the results
+results = count_covered_words(words, patterns)
+
+# Print the results
+for result in results:
+    print(result)
+```
+
+### Explanation:
+
+1. **Function `count_covered_words`**:
+   - This function takes a list of words and a list of patterns as input.
+   - For each pattern, it iterates through all possible positions where the wildcard `*` could be placed within the word.
+   - If placing the `*` at any position matches the pattern with the word, it increments the count.
+
+2. **Reading Input**:
+   - The input is read as a single string and split into components.
+   - The first two values are `N` (number of words) and `Q` (number of patterns).
+   - The next `N` lines are the words, and the following `Q` lines are the patterns.
+
+3. **Processing Patterns**:
+   - For each pattern, the function checks how many words cover it by iterating through all possible positions for the wildcard `*`.
+
+4. **Output**:
+   - The results are printed one per line.
+
+### Complexity:
+- The time complexity is O(N * Q * L), where `N` is the number of words, `Q` is the number of patterns, and `L` is the average length of the words/patterns.
+- This solution is efficient enough for the given constraints (1 ≤ N, Q ≤ 100,000).

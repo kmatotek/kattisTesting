@@ -1,0 +1,100 @@
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+
+def count_permutations(values):
+    counts = {}
+    for value in values:
+        if value not in counts:
+            counts[value] = 0
+        counts[value] += 1
+    
+    numerator = factorial(len(values))
+    denominator = 1
+    for count in counts.values():
+        denominator *= factorial(count)
+    
+    return numerator // denominator
+
+def read_input():
+    while True:
+        N = int(input())
+        if N == 0:
+            break
+        values = list(map(int, input().split()))
+        yield values
+
+def main():
+    for values in read_input():
+        print(count_permutations(values))
+
+if __name__ == "__main__":
+    main()
+```
+
+### Explanation:
+
+1. **Factorial Function**: The `factorial` function calculates the factorial of a given number using an iterative approach.
+   ```python
+   def factorial(n):
+       if n == 0:
+           return 1
+       result = 1
+       for i in range(1, n + 1):
+           result *= i
+       return result
+   ```
+
+2. **Count Permutations Function**: The `count_permutations` function calculates the number of different permutations that would generate the same Binary Search Tree (BST) given a list of values.
+   - It counts the frequency of each value in the input list.
+   - It then uses these frequencies to calculate the total number of unique permutations using the formula:
+     \[
+     \text{Number of Permutations} = \frac{\text{Total Number of Values}!}{\prod (\text{Count of Each Value}!)}
+     \]
+   ```python
+   def count_permutations(values):
+       counts = {}
+       for value in values:
+           if value not in counts:
+               counts[value] = 0
+           counts[value] += 1
+      
+       numerator = factorial(len(values))
+       denominator = 1
+       for count in counts.values():
+           denominator *= factorial(count)
+      
+       return numerator // denominator
+   ```
+
+3. **Read Input Function**: The `read_input` function reads the input from the user until a line containing `0` is encountered.
+   ```python
+   def read_input():
+       while True:
+           N = int(input())
+           if N == 0:
+               break
+           values = list(map(int, input().split()))
+           yield values
+   ```
+
+4. **Main Function**: The `main` function processes each tree by calling the `count_permutations` function and printing the result.
+   ```python
+   def main():
+       for values in read_input():
+           print(count_permutations(values))
+   
+   if __name__ == "__main__":
+       main()
+   ```
+
+### Usage:
+- This program reads input from standard input, processes each tree to count the number of different permutations that would generate the same BST, and prints the result.
+- You can run this script in an environment where Python is installed and provide input through the terminal or a file redirection.
+
+This code does not require any external libraries and adheres strictly to internal Python libraries.

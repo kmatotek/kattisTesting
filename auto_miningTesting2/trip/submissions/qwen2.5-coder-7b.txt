@@ -1,0 +1,47 @@
+Here is a Python program that solves this problem:
+
+```python
+while True:
+    n = int(input())
+    
+    if not n: break
+    
+    students_expenses = [float(input()) for _ in range(n)]
+    total_expense = sum(students_expenses)
+    
+    equal_share_per_student = total_expense / n
+    
+    exchange_amounts = []
+    remaining_debt = 0.00
+    
+    for i in range(n):
+        difference = students_expenses[i] - equal_share_per_student
+        
+        if difference > 0:
+            exchange_amounts.append(difference)
+            
+            remaining_debt += difference
+        elif difference < 0:
+            exchange_amounts.append(0.00)
+    
+    # Since the total amount of money to be exchanged must be zero,
+    # the last student should not receive any money.
+    for i in range(n):
+        if exchange_amounts[i] == remaining_debt:
+            exchange_amounts.pop(i)
+            break
+    
+    min_total_exchange = sum(exchange_amounts)
+    
+    print(f'${min_total_exchange:.2f}')
+```
+
+This Python program reads input from standard input and computes the minimum total amount of money that must be exchanged to equalize the students' costs for each trip. It uses a while loop to read multiple trips until a line containing '0' is encountered.
+
+The program calculates the total expense of the trip, the equal share per student, and initializes two lists: one to store the exchange amounts for each student (exchange_amounts) and another to store the remaining debt (remaining_debt).
+
+For each student, it calculates the difference between their expense and the equal share. If the difference is positive (meaning they have an excess of money), it appends the difference to the exchange_amounts list and adds it to the remaining_debt. If the difference is negative (meaning they owe money), it appends 0.00 to the exchange_amounts list.
+
+Finally, the program removes the last element from the exchange_amounts list if its value equals the remaining_debt. This ensures that the total amount of money to be exchanged must be zero.
+
+The program then calculates the minimum total exchange by summing up the values in the exchange_amounts list and prints the result formatted as dollars and cents using f-string formatting.

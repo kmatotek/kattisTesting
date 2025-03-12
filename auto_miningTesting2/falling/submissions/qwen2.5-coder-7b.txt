@@ -1,0 +1,50 @@
+To solve this problem, we need to find two non-negative integers \( n_1 \) and \( n_2 \) such that:
+
+\[ n_2^2 - n_1^2 = D \]
+
+This can be rewritten as:
+
+\[ (n_2 + n_1)(n_2 - n_1) = D \]
+
+Since we are looking for non-negative integers, both factors must be non-negative. Additionally, \( n_2 > n_1 \).
+
+Here is a Python program to find such \( n_1 \) and \( n_2 \):
+
+```python
+def find_frames(D):
+    # Iterate over possible values of n1
+    for n1 in range(int(D**0.5) + 1):
+        n2_squared = D + n1**2
+        n2 = int(n2_squared**0.5)
+        
+        if n2 * n2 == n2_squared:
+            return (n1, n2)
+    
+    # If no such pair is found, return "impossible"
+    return "impossible"
+
+# Input
+D = int(input())
+
+# Output the result
+result = find_frames(D)
+print(result)
+```
+
+### Explanation:
+
+1. **Iterate over possible values of \( n_1 \)**:
+   - We start from \( n_1 = 0 \) and go up to a reasonable limit, which is \( \sqrt{D} \). This is because if \( n_2 \) were greater than \( \sqrt{D} \), then \( n_2^2 \) would be much larger than \( D \).
+
+2. **Calculate \( n_2 \)**:
+   - For each \( n_1 \), we calculate \( n_2^2 = D + n_1^2 \).
+   - Then, we check if \( n_2^2 \) is a perfect square by taking its square root and checking if the result squared equals \( n_2^2 \).
+
+3. **Check if the factors are valid**:
+   - If \( n_2^2 \) is a perfect square, then \( n_2 = \sqrt{n_2^2} \).
+   - We return the pair \( (n_1, n_2) \).
+
+4. **If no such pair is found**:
+   - If the loop completes without finding any valid pair, we return "impossible".
+
+This program ensures that we find two frames \( n_1 \) and \( n_2 \) if they exist, or correctly indicate when they do not.

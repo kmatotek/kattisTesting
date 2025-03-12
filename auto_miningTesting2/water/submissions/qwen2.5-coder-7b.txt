@@ -1,0 +1,96 @@
+To solve this problem, we can use a modified version of Dijkstra's algorithm to find the maximum flow from the pumping station (station 1) to the mansion (station n). We need to handle two types of operations:
+
+1. Increase the capacity of an existing pipe.
+2. Add a new pipe between two stations.
+
+We will maintain a graph where each edge has a capacity, and we'll run Dijkstra's algorithm after each operation to find the maximum flow.
+
+Here is the Python code to achieve this:
+
+```python
+import heapq
+
+def dijkstra(graph, start, end):
+    n = len(graph)
+    distance = [-1] * n
+    distance[start] = 0
+    pq = [(0, start)]
+    
+    while pq:
+        dist, u = heapq.heappop(pq)
+        
+        if dist > distance[u]:
+            continue
+        
+        for v, capacity in graph[u]:
+            new_dist = dist + capacity
+            
+            if distance[v] == -1 or new_dist > distance[v]:
+                distance[v] = new_dist
+                heapq.heappush(pq, (new_dist, v))
+    
+    return distance[end]
+
+def add_capacity(graph, u, v, c):
+    for i in range(len(graph[u])):
+        if graph[u][i][0] == v:
+            graph[u][i] = (v, max(graph[u][i][1], c))
+            return
+    graph[u].append((v, c))
+
+def add_edge(graph, u, v, c):
+    if not any(v in edges for _, edges in graph.items()):
+        graph[v] = []
+    graph[v].append((u, c))
+    add_capacity(graph, u, v, c)
+
+def solve(n, p, k, initial_pipes, improvements):
+    graph = {1: []}
+    
+    # Initialize the graph with the initial pipes
+    for a, b, c in initial_pipes:
+        if not any(b in edges for _, edges in graph.items()):
+            graph[b] = []
+        graph[a].append((b, c))
+        add_capacity(graph, a, b, c)
+    
+    results = [dijkstra(graph, 1, n)]
+    
+    for a, b, c in improvements:
+        if (a, b) in [(u, v[0]) for u, v in graph.items()] or (b, a) in [(u, v[0]) for u, v in graph.items()]:
+            add_capacity(graph, a, b, c)
+        else:
+            add_edge(graph, a, b, c)
+        
+        results.append(dijkstra(graph, 1, n))
+    
+    return results
+
+# Read input
+n, p, k = map(int, input().split())
+initial_pipes = [tuple(map(int, input().split())) for _ in range(p)]
+improvements = [tuple(map(int, input().split())) for _ in range(k)]
+
+# Solve the problem and print results
+results = solve(n, p, k, initial_pipes, improvements)
+for result in results:
+    print(result)
+```
+
+### Explanation:
+
+1. **Graph Representation**: The graph is represented using an adjacency list where each node points to a list of tuples representing its connected neighbors and their capacities.
+
+2. **Dijkstra's Algorithm**: This function finds the maximum flow from the start (pumping station) to the end (mansion) by maintaining a priority queue of nodes based on their distances.
+
+3. **Capacity Updates**:
+   - `add_capacity`: Increases the capacity of an existing edge.
+   - `add_edge`: Adds a new edge between two stations with a given capacity and updates the capacities in both directions.
+
+4. **Main Function (`solve`)**:
+   - Initializes the graph with initial pipes.
+   - Runs Dijkstra's algorithm to find the maximum flow initially.
+   - For each improvement, either updates an existing pipe's capacity or adds a new edge and runs Dijkstra's algorithm again.
+   - Stores and returns the results after each improvement.
+
+This approach ensures that we handle both types of operations efficiently and correctly update the graph as needed.

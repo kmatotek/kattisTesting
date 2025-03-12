@@ -1,0 +1,61 @@
+Here is a Python program that solves the problem. The solution uses dynamic programming to calculate the probability of your candidate winning.
+
+```python
+def calculate_win_probability(N, V1, V2, W):
+    P = [[0.0 for _ in range(V2+1)] for _ in range(N+1)]
+    
+    # Fill the DP table
+    for i in range(1, N+1):
+        for j in range(min(i+1, V2+1)):
+            P[i][j] = 0.5 * (P[i-1][j-1] if j > 0 else 0) + 0.5 * (P[i-1][j])
+    
+    # Calculate the probability of winning
+    win_prob = sum(P[N][i] for i in range(V2+1))
+    
+    return win_prob
+
+def determine_action(N, V1, V2, W):
+    W /= 100.0  # Convert percentage to decimal
+    
+    win_probability = calculate_win_probability(N, V1, V2, W)
+    
+    if win_probability > W:
+        return "GET A CRATE OF CHAMPAGNE FROM THE BASEMENT!"
+    elif win_probability == W:
+        return "PATIENCE, EVERYONE! (It's a tie)"
+    else:
+        return "RECOUNT!"
+
+# Read input
+T = int(input())
+results = []
+for _ in range(T):
+    N, V1, V2, W = map(int, input().split())
+    result = determine_action(N, V1, V2, W)
+    results.append(result)
+
+# Print output
+for result in results:
+    print(result)
+```
+
+### Explanation:
+
+1. **Dynamic Programming Table (P)**: A 2D array `P` is used to store the probability of winning for each possible number of votes left and each possible vote count for your candidate.
+
+2. **Filling the DP Table**: 
+   - For each vote `i`, we iterate through all possible vote counts `j`.
+   - The probability of winning at state `(i, j)` is calculated as the average of two probabilities:
+     - The probability of winning if the next vote goes to your candidate: `P[i-1][j-1]`
+     - The probability of winning if the next vote goes to the opponent: `P[i-1][j]`
+
+3. **Calculating the Probability**:
+   - Sum up all probabilities in `P[N][j]` where `j` ranges from 0 to `V2`. This gives the total probability of your candidate winning with `N` votes left.
+
+4. **Determining the Action**:
+   - Compare the calculated win probability with the given threshold `W`.
+   - If the probability is greater than `W`, print "GET A CRATE OF CHAMPAGNE FROM THE BASEMENT!".
+   - If the probability is equal to `W`, it's a tie, and you should print "PATIENCE, EVERYONE! (It's a tie)".
+   - Otherwise, print "RECOUNT!".
+
+This solution handles all the constraints and requirements specified in the problem.

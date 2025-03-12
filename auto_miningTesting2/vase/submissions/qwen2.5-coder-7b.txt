@@ -1,0 +1,82 @@
+```python
+def find_max_k(vases):
+    shapes = set()
+    decorations = set()
+    
+    for shape, decoration in vases:
+        shapes.add(shape)
+        decorations.add(decoration)
+    
+    min_shape_count = len(shapes) // 2
+    min_decoration_count = len(decorations) // 2
+    
+    k = min(min_shape_count, min_decoration_count)
+    
+    return k
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    index = 0
+    results = []
+    
+    n = int(data[index])
+    index += 1
+    
+    for _ in range(n):
+        m = int(data[index])
+        index += 1
+        
+        vases = []
+        for _ in range(m):
+            s_i = int(data[index])
+            d_i = int(data[index + 1])
+            index += 2
+            vases.append((s_i, d_i))
+        
+        results.append(find_max_k(vases))
+    
+    for result in results:
+        print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Explanation:
+
+1. **Function `find_max_k`:**
+   - This function takes a list of vases (each represented as a tuple `(shape, decoration)`) and calculates the maximum number \( k \) such that there are \( k \) shapes and \( k \) decorations for which Mr Cheng's collection contains all \( k \cdot k \) combinations of those shapes and decorations.
+   - It first extracts the set of unique shapes and decorations from the list of vases.
+   - It then determines the minimum count between half the number of unique shapes and half the number of unique decorations. This value represents the maximum possible \( k \) because Mr Cheng wants to have a full collection of combinations for \( k \) shapes and \( k \) decorations.
+
+2. **Function `main`:**
+   - This function reads input from standard input, processes each test scenario, and outputs the results.
+   - It first reads the number of test scenarios \( n \).
+   - For each test scenario, it reads the number of vases \( m \) and then reads the list of vases.
+   - It calls `find_max_k` to determine the maximum \( k \) for each test scenario and stores the results.
+   - Finally, it prints all the results.
+
+### Example Usage:
+- Input:
+  ```
+  2
+  5
+  11 13
+  23 5
+  17 36
+  11 5
+  23 13
+  2
+  23 15
+  15 23
+  ```
+- Output:
+  ```
+  1
+  1
+  ```
+
+This code should work for the given constraints and correctly determine the maximum \( k \) for each test scenario.

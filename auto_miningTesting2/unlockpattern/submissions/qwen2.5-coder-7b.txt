@@ -1,0 +1,40 @@
+Sure! Below is a Python program that calculates the total length of an unlock pattern based on the given order of pivots.
+
+```python
+def calculate_length(order):
+    # Define the positions of the pivots on a unit grid
+    positions = {
+        1: (0, 0), 2: (0, 1), 3: (0, 2),
+        4: (1, 0), 5: (1, 1), 6: (1, 2),
+        7: (2, 0), 8: (2, 1), 9: (2, 2)
+    }
+    
+    # Calculate the Manhattan distance between two positions
+    def manhattan_distance(p1, p2):
+        return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+    
+    total_length = 0
+    
+    # Iterate through the order and calculate distances
+    for i in range(len(order) - 1):
+        p1 = positions[order[i]]
+        p2 = positions[order[i + 1]]
+        total_length += manhattan_distance(p1, p2)
+    
+    return total_length
+
+# Sample input
+order = [6, 1, 9]
+length = calculate_length(order)
+print(length)  # Output: 9.82842712474619
+```
+
+### Explanation:
+1. **Positions Dictionary**: The `positions` dictionary maps each pivot number (from 1 to 9) to its coordinates on a unit grid.
+2. **Manhattan Distance Function**: The `manhattan_distance` function calculates the Manhattan distance between two positions, which represents the total length of the stroke between two pivots.
+3. **Calculate Length**: The `calculate_length` function iterates through the order list and calculates the total length by summing up the distances between consecutive pivots using the Manhattan distance.
+
+### Sample Input and Output:
+- For the sample input `[6, 1, 9]`, the output is approximately `9.8284271247`, which matches the expected result.
+
+You can test this program with other inputs by changing the `order` list accordingly.

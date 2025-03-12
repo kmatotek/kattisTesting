@@ -1,0 +1,42 @@
+Here's a Python program that addresses the problem statement. The program follows these steps:
+
+1. Parse the input values to get the number of buses, stations, and time constraint.
+2. Store the bus schedules in a list with details such as start station, destination station, departure time, arrival time, and probability of running.
+3. Use dynamic programming to calculate the maximum probability of reaching the airport on time.
+
+```python
+def max_probability_to_airport(m, n, k, buses):
+    # Initialize DP array where dp[i] represents the probability of reaching station i on time
+    dp = [0.0 for _ in range(n)]
+    dp[0] = 1.0  # Starting at station 0
+    
+    for bus in buses:
+        a, b, s, t, p = bus
+        if t <= k:
+            # If the bus arrives by time k, update the probability of reaching station b
+            new_dp = [p * dp[a]] + dp[1:]
+            dp[b] = max(dp[b], max(new_dp))
+    
+    return dp[1]
+
+# Input reading
+m, n = map(int, input().split())
+k = int(input())
+buses = []
+
+for _ in range(m):
+    a, b, s, t, p = map(float, input().split())
+    buses.append((int(a), int(b), int(s), int(t), p))
+
+# Calculate and print the result
+result = max_probability_to_airport(m, n, k, buses)
+print(f"{result:.6f}")
+```
+
+### Explanation:
+1. **Input Parsing**: The program reads the number of buses (`m`), number of stations (`n`), and time constraint (`k`). It then reads each bus's details and stores them in a list.
+2. **Dynamic Programming Initialization**: A DP array `dp` is initialized where `dp[i]` represents the maximum probability of reaching station `i` on time, starting with `1.0` at station `0`.
+3. **DP Update**: For each bus, if it arrives by the time constraint (`t <= k`), the program updates the DP array to reflect the new probability of reaching the destination station.
+4. **Result Calculation and Output**: The maximum probability of reaching the airport (station `1`) is calculated from the DP array and printed with six decimal places.
+
+This approach ensures that the program efficiently calculates the maximum probability using dynamic programming, adhering to the constraints provided in the problem statement.

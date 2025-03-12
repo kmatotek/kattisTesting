@@ -1,0 +1,72 @@
+Here's a Python program that solves the problem as described. This program uses only internal Python libraries and follows the guidelines provided.
+
+```python
+import math
+
+def calculate_distance(commands):
+    x, y = 0, 0
+    angle = 0  # Initial direction: facing north (0 degrees)
+
+    for command in commands:
+        parts = command.split()
+        if parts[0] == 'fd':
+            distance = int(parts[1])
+            x += distance * math.cos(math.radians(angle))
+            y += distance * math.sin(math.radians(angle))
+        elif parts[0] == 'bk':
+            distance = int(parts[1])
+            x -= distance * math.cos(math.radians(angle))
+            y -= distance * math.sin(math.radians(angle))
+        elif parts[0] == 'lt':
+            angle -= int(parts[1])
+        elif parts[0] == 'rt':
+            angle += int(parts[1])
+
+    # Calculate the straight-line distance from the starting point (0, 0)
+    return round(math.sqrt(x**2 + y**2))
+
+def main():
+    import sys
+    input = sys.stdin.read
+    data = input().split()
+    
+    index = 0
+    num_test_cases = int(data[index])
+    index += 1
+    
+    results = []
+    for _ in range(num_test_cases):
+        num_commands = int(data[index])
+        index += 1
+        
+        commands = data[index:index + num_commands]
+        index += num_commands
+        
+        result = calculate_distance(commands)
+        results.append(result)
+    
+    # Print all results
+    for result in results:
+        print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Explanation:
+
+1. **calculate_distance**: This function takes a list of commands and calculates the final position of the turtle using basic trigonometry.
+   - It initializes the turtle's starting position at `(0, 0)` and facing north (0 degrees).
+   - It iterates through each command, updating the position based on the direction (`lt` or `rt`) and distance (`fd` or `bk`).
+   - After processing all commands, it calculates the straight-line distance from the starting point using the Euclidean distance formula.
+
+2. **main**: This function handles input reading and calling the `calculate_distance` function for each test case.
+   - It reads the number of test cases and processes each one individually.
+   - For each test case, it reads the number of commands and then reads the commands themselves.
+   - It calculates the distance for each test case and stores the result.
+   - Finally, it prints all the results.
+
+### Usage:
+- This program can be run directly from a Python environment.
+- The input is read from `stdin`, and the output is printed to `stdout`.
+- For testing purposes, you can provide the input as shown in the sample test case.

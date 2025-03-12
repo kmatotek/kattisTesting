@@ -1,0 +1,58 @@
+To solve this problem, we need to find the optimal way to deliver all letters by minimizing the total travel distance. This can be approached as a variation of the Traveling Salesman Problem (TSP), but with constraints on the capacity of the truck.
+
+Here's a step-by-step approach to solving this problem:
+
+1. **Parse Input**: Read the number of delivery addresses \(N\) and the carrying capacity \(K\). Then, read each delivery address and the number of letters at that address.
+2. **Dynamic Programming Approach**: Use dynamic programming to keep track of the minimum distance traveled up to a certain point with a given remaining capacity.
+3. **State Representation**: Define a state as \((i, j)\), where \(i\) is the current location index and \(j\) is the remaining capacity.
+4. **Transition Function**: For each state \((i, j)\), calculate the minimum distance to reach the next delivery point by either:
+   - Delivering some letters at the current location and moving to the next one without reloading.
+   - Returning to the post office to reload before moving to the next location.
+5. **Result Extraction**: The final result will be the minimum distance from the last state to the origin.
+
+Here's the Python code implementing this approach:
+
+```python
+def min_travel_distance(N, K, deliveries):
+    # Sort deliveries by their location
+    deliveries.sort()
+    
+    # Initialize DP table
+    dp = [[float('inf')] * (K + 1) for _ in range(N)]
+    dp[0][deliveries[0][1]] = abs(deliveries[0][0])
+    
+    for i in range(1, N):
+        x_i, t_i = deliveries[i]
+        prefix_sum = [0] * (K + 1)
+        prefix_sum[t_i] = abs(x_i - deliveries[i-1][0]) * 2
+        for j in range(K - t_i + 1):
+            prefix_sum[j + t_i] = min(prefix_sum[j + t_i], prefix_sum[j] + abs(x_i - deliveries[i-1][0]) * 2)
+        
+        for j in range(K, -1, -1):
+            if dp[i-1][j] != float('inf'):
+                for k in range(max(0, K - j), min(K, t_i) + 1):
+                    dp[i][j + k] = min(dp[i][j + k], dp[i-1][j] + prefix_sum[k])
+    
+    # Find the minimum distance to return to the origin with any remaining capacity
+    result = float('inf')
+    for j in range(K + 1):
+        if dp[N-1][j] != float('inf'):
+            result = min(result, dp[N-1][j] + abs(deliveries[-1][0]))
+    
+    return int(result)
+
+# Read input
+N, K = map(int, input().split())
+deliveries = [tuple(map(int, input().split())) for _ in range(N)]
+
+# Output the result
+print(min_travel_distance(N, K, deliveries))
+```
+
+### Explanation:
+- **Sorting**: We sort the delivery locations to facilitate the dynamic programming transitions.
+- **DP Table Initialization**: The DP table `dp[i][j]` stores the minimum distance to reach location \(i\) with \(j\) remaining capacity.
+- **Prefix Sum Optimization**: We use a prefix sum array to optimize the transition function, reducing redundant calculations.
+- **Result Extraction**: We iterate through all possible remaining capacities and find the minimum distance to return to the origin.
+
+This approach ensures that we efficiently compute the optimal delivery route while respecting the truck's carrying capacity.
