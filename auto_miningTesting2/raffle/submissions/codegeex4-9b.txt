@@ -1,0 +1,50 @@
+The problem is a combinatorial one where we need to determine the maximum probability of drawing exactly `p` names (including yours) from a box containing `n+p` names, with each name being drawn without replacement. This is a classic "stars and bars" problem in combinatorics, which can be solved using combinations.
+
+The formula for choosing exactly `p` names out of `n+p` where your name must be one of the chosen ones is given by:
+\[ \binom{n + p - 1}{p - 1} \]
+This formula calculates the number of ways to choose `p-1` additional names from the other `n` names, and then adds your name.
+
+The total number of ways to choose any `p` names from `n+p` is:
+\[ \binom{n + p}{p} \]
+
+Thus, the probability of winning exactly `p` prizes is:
+\[ \frac{\binom{n + p - 1}{p - 1}}{\binom{n + p}{p}} \]
+This can be simplified to:
+\[ \frac{(n + p - 1)! / (p - 1)!(n - 1)!}{(n + p)! / p!n!} \]
+Which further simplifies to:
+\[ \frac{(n + p - 1) * (n + p - 2) * ... * n}{(n + p)! / (p * (n + p - p))} \]
+This can be efficiently computed using Python's `math.comb` function for combinations or manually by computing factorials and inverses.
+
+## Python Code
+
+```python
+import sys
+from math import factorial as fact
+
+def main():
+    # Read input values
+    n, p = map(int, sys.stdin.read().split())
+    
+    # Calculate the maximum probability of winning exactly p prizes
+    num = 1
+    den = 1
+    
+    # Compute the numerator (n + p - 1) * (n + p - 2) * ... * n
+    for i in range(n, n + p - 1, -1):
+        num *= i
+    
+    # Compute the denominator p! * (n + p)! / (p * (n + p - p))
+    den *= fact(p)
+    den *= fact(n + p) // (fact(p) * fact(n))
+    
+    # Calculate the probability
+    prob = num / den
+    
+    # Print the result with a precision of 10 decimal places
+    print(f"{prob:.10f}")
+
+if __name__ == "__main__":
+    main()
+```
+
+This code reads two integers `n` and `p`, computes the required probability using combinatorial logic, and prints it with high precision. The use of `factorial` function avoids potential issues with large numbers by directly calculating the product for the numerator and simplifying the denominator accordingly.

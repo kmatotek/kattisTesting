@@ -6,7 +6,7 @@ import subprocess
 ## Each problem folder must have a 'problem_text' of the problem's description ##
 ## Must have a .kattisrc configuration file in root directory ##
 
-model = "qwen2.5-coder:7b"  # Example model name; can also be codellama:7b, codegemma:7b, etc.
+model = "codegeex4:9b"  # Example model name; can also be codellama:7b, codegemma:7b, etc.
 
 # Helper function to format the model name for file naming
 def format_model_name(model_name):
